@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<DataContext>();
+builder.Services.AddCors();
 builder.Services.AddControllers().AddJsonOptions(x =>
     {
         // serialize enums as strings in api responses (e.g. Role)
@@ -33,9 +34,18 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-// global error handler
-app.UseMiddleware<ErrorHandlerMiddleware>();
+// configure HTTP request pipeline
+{
+    // global cors policy
+    app.UseCors(x => x
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 
-app.MapControllers();
+    // global error handler
+    app.UseMiddleware<ErrorHandlerMiddleware>();
+
+    app.MapControllers();
+}
 
 app.Run();
