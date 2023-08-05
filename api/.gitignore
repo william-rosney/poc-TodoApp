@@ -455,3 +455,5 @@ $RECYCLE.BIN/
 
 ## # local sqlite db that is auto generated
 TodoApp.db
+TodoApp.db-shm
+TodoApp.db-wal
