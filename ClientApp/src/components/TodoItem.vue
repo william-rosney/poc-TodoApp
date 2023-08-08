@@ -1,82 +1,40 @@
 <template>
     <div class="todo-container">
-        <input type="checkbox" v-model="todo.isCompleted">
-        <span :class="{completed: todo.isCompleted}" @click="() => isDialogOpened = true" >{{ todo.title }}</span>
-        <button @click="deleteTodo">X</button>
-        <UpdateTodoItemDialog v-if="isDialogOpened"
-            :target-todo="{
-                id: todo.id,
-                title: todo.title,
-                isCompleted: todo.isCompleted
-            }" 
+        <input type="checkbox" v-model="props.todo.isCompleted">
+        <span :class="{completed: props.todo.isCompleted}" @click="() => isDialogOpened = true">{{ props.todo.title }}</span>
+        <button @click="deleteTodo(props.todo.id)">X</button>
+        <UpdateTodoDialog v-if="isDialogOpened"
+            :target-todo="props.todo" 
             :is-open="isDialogOpened"
-            @update-todo="updateTodoAsync"
+            @update-todo="updateTodo"
             @close="closeDialog" />
     </div>
 </template>
 
 <script setup>
-import { computed, createApp, reactive, ref, watch } from 'vue';
-import TodoAppDataService from '../../services/TodoAppDataService';
-import { todos } from '../stores/todos';
-import UpdateTodoItemDialog from './UpdateTodoItemDialog.vue';
+import { ref, watch } from 'vue';
+import UpdateTodoDialog from './UpdateTodoDialog.vue';
+import { useTodos } from '../composables/use-todos';
+
+const { deleteTodo, updateTodo } = useTodos();
 
     const props = defineProps({
-        id: {
-            type: Number,
-            required: true
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        isCompleted: {
-            type: Boolean,
+        todo: {
+            type: Object,
             required: true
         }
     });
 
-    const todo = ref({...props});
-    const emits = defineEmits(['update']);
-
-    // const todo = computed(() => {
-    //     return todos.value.find(todo => todo.id === props.todoId);
-    // });
-
+    watch(() => props.todo.isCompleted, () => {
+        updateTodo(props.todo);
+    })
     const isDialogOpened = ref(false);
+    
     function closeDialog(){
         console.log('CloseDialog() TodoItem')
         isDialogOpened.value = false;
     }
-
-    watch(todo.value, (newTodo) => {
-        console.log(newTodo);
-        updateTodoAsync(newTodo);
-    })
-
-    async function updateTodoAsync(newTodo){
-        try{
-            todo.value = newTodo;
-            console.log("updateTodoAsync() NEWTODO", newTodo);
-            console.log("updateTodoAsync() TODO", todo.value);
-            const response = await TodoAppDataService.update(newTodo.id, newTodo);
-            emits('update');
-            console.log(response.data);
-
-        }catch(error) {
-          console.log(error);
-        };
-    }
-
-    async function deleteTodo(){
-        try{
-            const response = await TodoAppDataService.delete(todo.value.id);
-            emits('update');
-            console.log(response.data);
-        }catch(error){
-            console.log(error);
-        };
-    }
+    
 </script>
 
 

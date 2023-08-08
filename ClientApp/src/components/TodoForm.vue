@@ -1,32 +1,15 @@
 <template>
-    <form @submit.prevent="addTodo">
-        <input type="text" v-model="newTodo.title">
+    <form @submit.prevent="addTodo(newTodoTitle)">
+        <input type="text" v-model="newTodoTitle">
         <button>Add</button>
     </form>
 </template>
 
 <script setup>
-import { reactive } from 'vue';
-import TodoAppDataService from '../../services/TodoAppDataService';
-import { todos } from '../stores/todos';
+import { ref } from 'vue';
+import { useTodos } from '../composables/use-todos'
 
-    const newTodo = reactive({
-        title: '',
-        isCompleted: false
-    });
+const { addTodo } = useTodos();
+const newTodoTitle = ref('');
 
-    const emits = defineEmits(['update']);
-
-    async function addTodo(){
-        try
-        {
-            console.log("newTodo", newTodo);
-            const response = await TodoAppDataService.create(newTodo);
-            emits('update');
-            console.log(response.data);
-        }catch (error)
-        {
-            console.log(error);
-        }
-    }
 </script>

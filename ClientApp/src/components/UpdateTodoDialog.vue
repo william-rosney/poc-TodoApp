@@ -8,8 +8,8 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from 'vue';
-import TodoAppDataService from '../../services/TodoAppDataService';
+    import { ref } from 'vue';
+    import { useTodos } from '../composables/use-todos';
     const props = defineProps({
         targetTodo : {
             type: Object,
@@ -21,19 +21,21 @@ import TodoAppDataService from '../../services/TodoAppDataService';
         }
     });
 
-    const emits = defineEmits(['updateTodo', 'close']);
+    const { updateTodo } = useTodos()
+    const emits = defineEmits(['close']);
 
-    const todo = reactive(props.targetTodo);
+    //Use spread syntax to create a new object with a different pointer reference
+    const todo = ref({...props.targetTodo});
+
+    function saveUpdates(){
+        console.log("saveUpdates()", todo.value);
+        updateTodo(todo.value);
+        closeDialog();
+    }
 
     function closeDialog(){
-        console.log('closeDialog()')
-        emits('close')
-    }
-    
-    function saveUpdates(){
-        console.log("saveUpdates()", todo);
-        emits('updateTodo', todo);
-        closeDialog();
+        console.log('closeDialog()');
+        emits('close');
     }
 </script>
 
