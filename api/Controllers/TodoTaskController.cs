@@ -36,9 +36,9 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(TodoTaskCreateDTO test)
+        public IActionResult Create(TodoTaskCreateDTO model)
         {
-            _todoService.Create(test);
+            _todoService.Create(model);
             return Ok(new { message = "TodoTask created" });
         }
 
