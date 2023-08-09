@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;700&family=Roboto:wght@100;300;400;500;700&display=swap');
+
+:root {
+    --primary-btn-color: #3d7ab0ff;
+    --secondary-btn-color: rgb(25, 76, 121);
+
+    --primary-bg-color: #ebf1f5ff;
+
+    --primary-font-color: #878795ff;
+    --secondary-font-color: #aeafb8;
+
+    --primary-add-icon-color: white;
+    --primary-delete-icon-color: #ccc;
+    --secondary-delete-icon-color: #9e9b9b;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Robboto', sans-serif;
+}

@@ -1,7 +1,9 @@
 <template>
   <main>
-    <TodoForm @update="getTodos" />
-    <TodoList @update="getTodos" :todos="todos"/>
+    <div class="container">
+      <TodoForm />
+      <TodoList :todos="todos"/>
+    </div>
   </main>
 </template>
 
@@ -21,30 +23,23 @@
 </script>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
+  main {
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    background-color: #f6f8fa;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  .container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 600px;
+    margin-top: 10%;
+    height: 500px;
+    overflow: hidden;
   }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
