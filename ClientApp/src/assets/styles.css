@@ -12,6 +12,12 @@
     --primary-add-icon-color: white;
     --primary-delete-icon-color: #ccc;
     --secondary-delete-icon-color: #9e9b9b;
+
+    --switch-width: 45px;
+    --switch-height: calc(var(--switch-width) / var(--switch-aspect-ratio));
+    --switch-aspect-ratio: calc(60 / 34);
+    --slider-size: calc(calc(var(--switch-width) - 8px) / 2);
+    --slider-border-radius: calc(var(--switch-width) / calc(var(--switch-aspect-ratio)));
 }
 
 body {
