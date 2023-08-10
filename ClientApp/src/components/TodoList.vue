@@ -2,7 +2,7 @@
     <div class="todos-container">
         <label>To do</label>
         <ul class="todo-list">
-            <li v-for="todo in uncompletedTodos" :key="todo.id">
+            <li v-for="(todo) in uncompletedTodos" :key="todo.id">
                 <TodoItem :todo="todo"/>
             </li>
         </ul>
@@ -19,6 +19,7 @@
     import { computed } from 'vue';
     import { useTodos } from '../composables/use-todos';
     import TodoItem from './TodoItem.vue';
+import BaseToggleSwitch from './BaseToggleSwitch.vue';
 
     const { todos } = useTodos();
 
@@ -34,8 +35,9 @@
 
 <style scoped>
     .todos-container {        
-        height: 90%;
+        height: 85%;
         overflow-y: scroll;
+        /* border: 1px solid red; */
     }
 
     label {

@@ -10,10 +10,9 @@
             <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
           </svg>
         </button>
-        <UpdateTodoDialog v-if="isDialogOpened"
+        <UpdateTodoDialog
             :target-todo="props.todo" 
             :is-open="isDialogOpened"
-            @update-todo="updateTodo"
             @close="closeDialog" />
     </div>
 </template>
@@ -53,8 +52,8 @@ const { deleteTodo, updateTodo } = useTodos();
     .todo-item {
     display: flex;
     align-items: center;
-    padding: 15px;
-    border: none;
+    padding-left: 15px;
+    border: 1px solid #fff;
     border-radius: 4px;
     box-shadow: 2px 2px 7px 0 rgb(0, 0, 0, 0.2);
     margin: 0 auto 10px auto;
@@ -64,10 +63,16 @@ const { deleteTodo, updateTodo } = useTodos();
     width: 90%;
   }
 
+  .todo-item:hover {
+    border: 1px solid var(--primary-btn-color);
+  }
+
   .todo-item input[type="checkbox"] {
     margin-right: 10px;
   }
   .todo-content {
+    padding: 20px 0;
+    /* background-color: red; */
     overflow-wrap: break-word;
     width: 85%;
   }
@@ -79,14 +84,23 @@ const { deleteTodo, updateTodo } = useTodos();
   .todo-item button {
     background-color: transparent;
     border: none;
-    color: #cb2431;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    padding: 8px;
     cursor: pointer;
     margin-left: auto;
     transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .todo-item button:hover {
-    color: #d73a49;
+    background-color: #f6f8fa;
+  }
+  .todo-item button:hover .delete-svgIcon path{
+    fill: var(--secondary-delete-icon-color);
   }
 
   .container input {
@@ -163,7 +177,7 @@ const { deleteTodo, updateTodo } = useTodos();
   fill: var(--secondary-delete-icon-color);
 }
 
-@keyframes pulse {
+/* @keyframes pulse {
   0% {
     box-shadow: 0 0 0 #0B6E4F90;
     rotate: 20deg;
@@ -180,6 +194,8 @@ const { deleteTodo, updateTodo } = useTodos();
   100% {
     box-shadow: 0 0 0 13px #0B6E4F30;
     rotate: 0;
-  }
+  } 
 }
+*/
+
 </style>

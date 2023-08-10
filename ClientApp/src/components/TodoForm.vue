@@ -1,6 +1,6 @@
 <template>
     <form class="todo-form" @submit.prevent="addTodo(newTodoTitle)">
-        <input class="todo-input" type="text" placeholder="Add Todo" v-model="newTodoTitle">
+        <input class="todo-input" type="text" placeholder="Add Todo" ref="input" v-model="newTodoTitle">
         <button class="add-button">
           <svg class="add-svgIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
@@ -10,11 +10,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useTodos } from '../composables/use-todos'
 
 const { addTodo } = useTodos();
 const newTodoTitle = ref('');
+const input = ref(null);
+
+onMounted(() => {
+  input.value.focus();
+})
 
 </script>
 
@@ -22,7 +27,7 @@ const newTodoTitle = ref('');
     .todo-form {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin: 10px 0px;
     gap: 5px;
   }
 
