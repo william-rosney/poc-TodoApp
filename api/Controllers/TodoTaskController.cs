@@ -46,7 +46,7 @@ namespace api.Controllers
         public IActionResult Upadte(int id, TodoTaskUpdateDTO model)
         {
             _todoService.Update(id, model);
-            return Ok(new { message = "TodoTask Updated"});
+            return Ok(new { message = $"TodoTask Updated"});
         }
 
         [HttpDelete("{id}")]

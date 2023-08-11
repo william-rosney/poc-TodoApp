@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace api.DTOs
 {
-    public class TodoTaskUpdateDTO
+    public class TodoTaskUpdateDTO : TodoTaskCreateDTO
     {
-        public string Title { get; set; }
-        public bool isCompleted { get; set; }
+
     }
 }

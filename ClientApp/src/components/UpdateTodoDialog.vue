@@ -6,7 +6,7 @@
             <form  @submit.prevent="saveUpdates">
                 <input type="text" v-model="todo.title" ref="input">
                 <div class="btn-row">
-                    <button class="btn close-btn" @click="closeDialog">Close</button>
+                    <button class="btn close-btn" type="button" @click="closeDialog">Close</button>
                     <button class="btn save-btn">Save</button>
                 </div>
             </form>

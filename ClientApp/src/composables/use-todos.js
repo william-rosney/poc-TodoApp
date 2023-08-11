@@ -10,7 +10,9 @@ export function useTodos() {
             console.log("getTodosAsync()")
             const response = await TodoAppDataService.getAll()
             todos.value = response.data;
-            return todos.value;
+            const sortedTodos = todos.value.sort((a, b) => new Date(a.lastUpdate) - new Date(b.lastUpdate));
+            console.log(sortedTodos);
+            return sortedTodos;
         } catch (error) {
             console.error(error);
             return

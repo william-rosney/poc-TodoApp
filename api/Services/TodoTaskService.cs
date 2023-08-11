@@ -33,6 +33,7 @@ namespace api.Services
         {
             var todos = _context.Todos;
             return _mapper.Map<IEnumerable<TodoTaskDTO>>(todos);
+            // .OrderBy(todo => todo.LastUpdate);
         }
 
         public TodoTaskDTO GetById(int id)
@@ -57,8 +58,8 @@ namespace api.Services
         public void Update(int id, TodoTaskUpdateDTO model)
         {
             TodoTask todo = GetTodoTaskById(id);
-
             todo = _mapper.Map(model, todo);
+            todo.LastUpdate = DateTime.Now;
             _context.Todos.Update(todo);
             _context.SaveChanges();
         }

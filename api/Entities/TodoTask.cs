@@ -12,6 +12,7 @@ namespace api.Entities
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
-        public bool isCompleted { get; set; }
+        public bool IsCompleted { get; set; }
+        public DateTime LastUpdate { get; set; }
     }
 }

@@ -2,7 +2,7 @@
     <div class="todos-container">
         <label>To do</label>
         <ul class="todo-list">
-            <li v-for="(todo) in uncompletedTodos" :key="todo.id">
+            <li v-for="todo in uncompletedTodos" :key="todo.id">
                 <TodoItem :todo="todo"/>
             </li>
         </ul>
@@ -19,18 +19,15 @@
     import { computed } from 'vue';
     import { useTodos } from '../composables/use-todos';
     import TodoItem from './TodoItem.vue';
-import BaseToggleSwitch from './BaseToggleSwitch.vue';
 
     const { todos } = useTodos();
-
-
+    
     const uncompletedTodos = computed(() => {
-        return todos.value.filter(todo => !todo.isCompleted);
+        return todos.value.filter(todo => !todo.isCompleted).sort((a, b) => new Date(a.lastUpdate) - new Date(b.lastUpdate));
     })
     const completedTodos = computed(() => {
-        return todos.value.filter(todo => todo.isCompleted);
-    })
-
+        return todos.value.filter(todo => todo.isCompleted).sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
+    });
 </script>
 
 <style scoped>
