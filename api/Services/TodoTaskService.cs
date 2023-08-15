@@ -15,6 +15,7 @@ namespace api.Services
         TodoTaskDTO GetById(int id);
         void Create(TodoTaskCreateDTO model);
         void Update(int id, TodoTaskUpdateDTO model);
+        void UpdateStatus(int id, TodoTaskUpdateDTO model);
         void Delete(int id);
 
     }
@@ -33,7 +34,6 @@ namespace api.Services
         {
             var todos = _context.Todos;
             return _mapper.Map<IEnumerable<TodoTaskDTO>>(todos);
-            // .OrderBy(todo => todo.LastUpdate);
         }
 
         public TodoTaskDTO GetById(int id)
@@ -63,12 +63,20 @@ namespace api.Services
             _context.Todos.Update(todo);
             _context.SaveChanges();
         }
+        public void UpdateStatus(int id, TodoTaskUpdateDTO model)
+        {
+            TodoTask todo = GetTodoTaskById(id);
+            todo = _mapper.Map(model, todo);
+            todo.LastUpdate = DateTime.Now;
+            todo.LastStatusUpdate = DateTime.Now;
+            _context.Todos.Update(todo);
+            _context.SaveChanges();
+        }
 
         // helper methods
         private TodoTask GetTodoTaskById(int id)
         {
-            var todo = _context.Todos.Find(id);
-            if (todo == null) throw new KeyNotFoundException("TodoTask not found");
+            var todo = _context.Todos.Find(id) ?? throw new KeyNotFoundException("TodoTask not found");
             return todo;
         }
     }

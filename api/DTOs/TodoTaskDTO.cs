@@ -11,6 +11,7 @@ namespace api.DTOs
         public string Title { get; set; }
         public bool isCompleted { get; set; }
         public DateTime LastUpdate { get; set; }
+        public DateTime LastStatusUpdate { get; set; }
 
     }
 }

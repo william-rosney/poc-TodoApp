@@ -48,6 +48,12 @@ namespace api.Controllers
             _todoService.Update(id, model);
             return Ok(new { message = $"TodoTask Updated"});
         }
+        [HttpPut("updateStatus/{id}")]
+        public IActionResult UpadteStatus(int id, TodoTaskUpdateDTO model)
+        {
+            _todoService.UpdateStatus(id, model);
+            return Ok(new { message = $"TodoTask Status Updated"});
+        }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

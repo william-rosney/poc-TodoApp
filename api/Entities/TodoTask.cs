@@ -13,6 +13,7 @@ namespace api.Entities
         [Required]
         public string Title { get; set; }
         public bool IsCompleted { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public DateTime LastUpdate { get; set; } = DateTime.Now;
+        public DateTime LastStatusUpdate { get; set; }
     }
 }
