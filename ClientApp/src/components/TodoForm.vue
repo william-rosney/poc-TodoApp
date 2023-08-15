@@ -1,7 +1,7 @@
 <template>
 	<form
 		class="todo-form"
-		@submit.prevent="addTodo(newTodoTitle)">
+		@submit.prevent="submit">
 		<input
 			class="todo-input"
 			type="text"
@@ -26,6 +26,15 @@
 	const { addTodo } = useTodos();
 	const newTodoTitle = ref('');
 	const input = ref(null);
+
+	function submit(){
+		if(newTodoTitle.value){
+			addTodo(newTodoTitle.value);
+			newTodoTitle.value = '';
+			console.log("OKAY");
+		}
+		input.value.focus();
+	}
 
 	onMounted(() => {
 		input.value.focus();

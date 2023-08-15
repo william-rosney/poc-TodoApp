@@ -2,6 +2,7 @@ import { computed, nextTick, ref } from 'vue'
 import TodoAppDataService from '../../services/TodoAppDataService';
 
 const todos = ref([]);
+const isLoading = ref(true);
 
 export function useTodos() {
     async function getTodos() {
@@ -10,6 +11,7 @@ export function useTodos() {
             const response = await TodoAppDataService.getAll()
             todos.value = response.data;
             console.log(todos.value);
+            isLoading.value = false;
             return todos.value;
         } catch (error) {
             console.error(error);
@@ -68,6 +70,7 @@ export function useTodos() {
 
     return {
         todos,
+        isLoading,
         getTodos,
         addTodo,
         deleteTodo,
