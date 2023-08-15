@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-	import { onUnmounted, ref, watch } from 'vue';
+	import { onBeforeUnmount,  ref } from 'vue';
 	import { useTodos } from '../composables/use-todos';
 	import Updatetododialog from './UpdateTodoDialog.vue';
 
@@ -41,14 +41,6 @@
 			required: true,
 		},
 	});
-
-	// watch(
-	// 	() => props.todo.isCompleted,
-	// 	(newStatus) => {
-	// 		console.log('TodoItem watch()');
-	// 		updateTodo(props.todo);
-	// 	}
-	// );
 	const isDialogOpened = ref(false);
 
 	const isDeleted = ref(false);
@@ -62,8 +54,10 @@
 		console.log('CloseDialog() TodoItem');
 		isDialogOpened.value = false;
 	}
-
-	onUnmounted(() => {
+	onBeforeUnmount(() => {
+		// We need to update the lastStatusUpdate Client Side before doing it server side 
+		// in order to move the TodoItem directly at the right place
+		props.todo.lastStatusUpdate = Date.now();
 		if (!isDeleted.value) updateStatusTodo(props.todo);
 	});
 </script>
@@ -179,24 +173,4 @@
 		fill: var(--secondary-delete-icon-color);
 	}
 
-	/* @keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 #0B6E4F90;
-    rotate: 20deg;
-  }
-
-  50% {
-    rotate: -20deg;
-  }
-
-  75% {
-    box-shadow: 0 0 0 10px #0B6E4F60;
-  }
-
-  100% {
-    box-shadow: 0 0 0 13px #0B6E4F30;
-    rotate: 0;
-  } 
-}
-*/
 </style>

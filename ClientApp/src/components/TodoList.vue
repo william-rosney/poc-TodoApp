@@ -4,7 +4,7 @@
 		<!-- <h2 v-if="isTodosEmpty">Your To do list is empty</h2> -->
 		<TransitionGroup
 			class="todo-list"
-			tag="ul"
+			tag="ol"
 			name="todo-list">
 			<li
 				class="todo-item"
@@ -16,7 +16,7 @@
 		<label>completed</label>
 		<TransitionGroup
 			class="todo-list"
-			tag="ul"
+			tag="ol"
 			name="todo-list">
 			<li
 				class="todo-item"
@@ -39,27 +39,26 @@
 		return !todos.value.length > 0;
 	});
 
-	// const sortedTodos = computed(() => {
-	// 	return [...todos.value].sort((a, b) => a.isCompleted - b.isCompleted);
-	// });
+	const sortedTodos = computed(() => {
+		return todos.value.sort(
+			(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
+		);
+	});
 
 	const uncompletedTodos = computed(() => {
-		return todos.value
-			.filter((todo) => !todo.isCompleted);
-			// .sort(
-			// 	(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
-			// );
+		return sortedTodos.value.filter((todo) => !todo.isCompleted);
 	});
+
 	const completedTodos = computed(() => {
-		return todos.value.filter((todo) => todo.isCompleted).reverse();
+		return sortedTodos.value.filter((todo) => todo.isCompleted).reverse();
 	});
 </script>
 
 <style scoped>
 	.todos-container {
-		height: 100%;
+		height: 85%;
 		overflow-y: scroll;
-		overflow: visible;
+		overflow-x: visible;
 		padding: 1px;
 		position: relative;
 		/* border: 1px solid red; */
@@ -98,29 +97,36 @@
 	.todo-item:hover {
 		border: 1px solid var(--primary-btn-color);
 	}
-	.todo-list-enter-from {
-		opacity: 0.9;
-		transform: translateX(-30px);
-	}
-	.todo-list-enter-to,
-	.todo-list-leave-from {
-		opacity: 1;
-		transform: translateX(0px);
-	}
 	.todo-list-enter-active {
-		transition: all 0.5s ease-out;
-	}
-	.todo-list-leave-to {
-		opacity: 0;
-		transform: translateX(30px);
+		animation: slide-in 0.8s ease-out;
 	}
 	.todo-list-leave-active {
-		transition: all 0.2s ease-in;
+		animation: slide-out 0.3s ease-in;
 		position: absolute;
 		width: 93%;
 	}
-
 	.todo-list-move {
 		transition: all 0.8s ease;
+	}
+
+	@keyframes slide-in {
+		from {
+			opacity: 0;
+			transform: translateX(-30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0px);
+		}
+	}
+	@keyframes slide-out {
+		from {
+			opacity: 1;
+			transform: translateX(0px);
+		}
+		to {
+			opacity: 0;
+			transform: translateX(30px);
+		}
 	}
 </style>
