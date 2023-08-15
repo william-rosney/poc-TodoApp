@@ -1,12 +1,13 @@
 <template>
 	<div
 		class="backdrop"
-		v-if="isOpen"></div>
+		v-if="isOpen"
+		@click="closeDialog"></div>
 	<Transition name="modal">
 		<dialog
 			class="update-dialog"
 			open
-			v-if="isOpen">
+			v-if="props.isOpen">
 			<h2>Todo details</h2>
 			<form @submit.prevent="saveUpdates">
 				<input
@@ -28,7 +29,7 @@
 </template>
 
 <script setup>
-	import { ref } from 'vue';
+	import { ref, onUpdated } from 'vue';
 	import { useTodos } from '../composables/use-todos';
 	const props = defineProps({
 		targetTodo: {
@@ -48,19 +49,22 @@
 	const todo = ref({ ...props.targetTodo });
 	const input = ref(null);
 	function saveUpdates() {
-		console.log('saveUpdates()', todo.value);
-		updateTodo(todo.value);
-		closeDialog();
+		if(todo.value.title) {
+			console.log('saveUpdates()', todo.value);
+			updateTodo(todo.value);
+			closeDialog();
+		}
 	}
 
 	function closeDialog() {
 		console.log('closeDialog()');
 		emits('close');
 	}
-
-	// onMounted(() => {
-	//     input.value.focus();
-	// })
+	onUpdated(() => {
+		if(props.isOpen)
+		input.value.focus();
+		console.log("Modal update");
+	})
 </script>
 
 <style scoped>
