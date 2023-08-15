@@ -61,9 +61,11 @@
 		emits('close');
 	}
 	onUpdated(() => {
-		if(props.isOpen)
-		input.value.focus();
-		console.log("Modal update");
+		if(props.isOpen){
+			input.value.focus();
+			todo.value = {...props.targetTodo};
+			console.log("Modal update");
+		}
 	})
 </script>
 
