@@ -80,11 +80,11 @@
 		background-color: rgba(0, 0, 0, 0.75);
 	}
 	.update-dialog {
-		position: fixed;
-		top: 30vh;
+		position: absolute;
+		/* top: 50%;
+		left: calc(30%); */
 		width: 30rem;
-		left: calc(50% - 15rem);
-		margin: 0;
+		/* margin: 0 auto; */
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 		border-radius: 8px;
 		padding: 1rem;
@@ -171,6 +171,19 @@
 		to {
 			opacity: 0;
 			transform: translateY(-50px) scale(0.9);
+		}
+	}
+
+	@media screen and (min-width: 587px) and (max-width: 1023px) {
+		.update-dialog {
+			background-color: blue;
+		}
+	}
+	@media screen and (max-width: 586px) {
+		.update-dialog {
+			background-color: red;
+			width: 90%;
+
 		}
 	}
 </style>

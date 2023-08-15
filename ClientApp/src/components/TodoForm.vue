@@ -81,4 +81,10 @@
 	.add-button:hover {
 		background-color: var(--secondary-btn-color);
 	}
+
+	@media screen and (max-width: 286px) {
+		.todo-form{
+			flex-direction: column;
+		}
+	}
 </style>
