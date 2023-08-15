@@ -16,7 +16,7 @@
 		display: inline-block;
 		width: 3px;
 		height: 20px;
-		background-color: rgba(224, 14, 14, 0.5);
+		background-color: var(--primary-btn-color);
 		border-radius: 10px;
 		animation: scale-up4 1s linear infinite;
 	}

@@ -60,7 +60,7 @@
 		overflow-y: scroll;
 		overflow-x: visible;
 		padding: 1px;
-		position: relative;
+		/* position: relative; */
 		/* border: 1px solid red; */
 	}
 

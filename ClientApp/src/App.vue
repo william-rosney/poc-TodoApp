@@ -41,10 +41,21 @@
 		height: 500px;
 		display: flex;
 		flex-direction: column;
+		position: relative;
 	}
 	.data-loader {
 		align-self: center;
 		margin-top: 15%;
 
+	}
+
+
+	@media screen and (min-width: 768px) and (max-width: 1023px) {
+		
+	}
+	@media screen and (max-width: 767px) {
+		.container {
+			width: 80%;
+		}
 	}
 </style>
