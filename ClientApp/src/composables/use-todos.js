@@ -1,18 +1,16 @@
-import { ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import TodoAppDataService from '../../services/TodoAppDataService';
 
 const todos = ref([]);
 
 export function useTodos() {
-
     async function getTodos() {
         try {
             console.log("getTodosAsync()")
             const response = await TodoAppDataService.getAll()
             todos.value = response.data;
-            const sortedTodos = todos.value.sort((a, b) => new Date(a.lastUpdate) - new Date(b.lastUpdate));
-            console.log(sortedTodos);
-            return sortedTodos;
+            console.log(todos.value);
+            return todos.value;
         } catch (error) {
             console.error(error);
             return
@@ -28,7 +26,7 @@ export function useTodos() {
                     title: newTodoTitle, 
                     isCompleted: false
                 });
-            getTodos();
+                await nextTick(getTodos());
             console.log(response.data);
         }catch (error)
         {
@@ -39,7 +37,8 @@ export function useTodos() {
     async function deleteTodo(id){
         try {
             const response = await TodoAppDataService.delete(id);
-            getTodos();
+            await nextTick(getTodos());
+            console.log(response.data);
         }catch(error){
             console.log(error);
         };
@@ -47,8 +46,19 @@ export function useTodos() {
 
     async function updateTodo(newTodo){
         try {
+            console.log(newTodo);
             const response = await TodoAppDataService.update(newTodo.id, newTodo);
-            getTodos();
+            await nextTick(getTodos());
+            console.log(response.data);
+
+        } catch(error) {
+          console.log(error);
+        };
+    }
+    async function updateStatusTodo(newTodo){
+        try {
+            const response = await TodoAppDataService.updateStatus(newTodo.id, newTodo);
+            await nextTick(getTodos());
             console.log(response.data);
 
         } catch(error) {
@@ -61,6 +71,7 @@ export function useTodos() {
         getTodos,
         addTodo,
         deleteTodo,
-        updateTodo
+        updateTodo,
+        updateStatusTodo
     }
 }

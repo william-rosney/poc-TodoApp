@@ -1,37 +1,37 @@
 <template>
-	<div class="todo-item">
-		<label class="container">
-			<input
-				type="checkbox"
-				v-model="props.todo.isCompleted" />
-			<div class="checkmark"></div>
-		</label>
-		<span
-			class="todo-content"
-			:class="{ completed: props.todo.isCompleted }"
-			@click="() => (isDialogOpened = true)"
-			>{{ props.todo.title }}</span
-		>
-		<button @click="onDelete()">
-			<svg
-				class="delete-svgIcon"
-				viewBox="0 0 448 512">
-				<path
-					d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
-			</svg>
-		</button>
-		<UpdateTodoDialog
-			v-if="!props.todo.isCompleted"
-			:target-todo="props.todo"
-			:is-open="isDialogOpened"
-			@close="closeDialog" />
-	</div>
+	<label class="container">
+		<input
+			type="checkbox"
+			v-model="props.todo.isCompleted" />
+		<div class="checkmark"></div>
+	</label>
+	<span
+		class="todo-content"
+		:class="{ completed: props.todo.isCompleted }"
+		@click="() => (isDialogOpened = true)"
+		>{{ props.todo.title }}</span
+	>
+	<button
+		class="delete-btn"
+		@click="onDelete()">
+		<svg
+			class="delete-svgIcon"
+			viewBox="0 0 448 512">
+			<path
+				d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+		</svg>
+	</button>
+	<Updatetododialog
+		v-if="!props.todo.isCompleted"
+		:target-todo="props.todo"
+		:is-open="isDialogOpened"
+		@close="closeDialog" />
 </template>
 
 <script setup>
-	import { onUnmounted, ref } from 'vue';
+	import { onUnmounted, ref, watch } from 'vue';
 	import { useTodos } from '../composables/use-todos';
-	import UpdateTodoDialog from './UpdateTodoDialog.vue';
+	import Updatetododialog from './UpdateTodoDialog.vue';
 
 	const { deleteTodo, updateStatusTodo } = useTodos();
 
@@ -42,18 +42,21 @@
 		},
 	});
 
-	// watch(() => props.todo.isCompleted, () => {
-	//   console.log("TodoItem watch()");
-	//   updateTodo(props.todo);
-	// });
+	// watch(
+	// 	() => props.todo.isCompleted,
+	// 	(newStatus) => {
+	// 		console.log('TodoItem watch()');
+	// 		updateTodo(props.todo);
+	// 	}
+	// );
 	const isDialogOpened = ref(false);
 
-  const isDeleted = ref(false);
+	const isDeleted = ref(false);
 
-  function onDelete() {
-    isDeleted.value = true;
-    deleteTodo(props.todo.id);
-  }
+	function onDelete() {
+		isDeleted.value = true;
+		deleteTodo(props.todo.id);
+	}
 
 	function closeDialog() {
 		console.log('CloseDialog() TodoItem');
@@ -61,31 +64,12 @@
 	}
 
 	onUnmounted(() => {
-    if(!isDeleted.value) 
-      updateStatusTodo(props.todo);
+		if (!isDeleted.value) updateStatusTodo(props.todo);
 	});
 </script>
 
 <style scoped>
-	.todo-item {
-		display: flex;
-		align-items: center;
-		padding-left: 15px;
-		border: 1px solid #fff;
-		border-radius: 4px;
-		box-shadow: 2px 2px 7px 0 rgb(0, 0, 0, 0.2);
-		margin: 0 auto 10px auto;
-		font-size: 1rem;
-		font-weight: 400;
-		color: #6a737d;
-		width: 90%;
-	}
-
-	.todo-item:hover {
-		border: 1px solid var(--primary-btn-color);
-	}
-
-	.todo-item input[type='checkbox'] {
+	.input[type='checkbox'] {
 		margin-right: 10px;
 	}
 	.todo-content {
@@ -99,7 +83,7 @@
 		color: var(--secondary-font-color);
 	}
 
-	.todo-item button {
+	.delete-btn {
 		background-color: transparent;
 		border: none;
 		border-radius: 50%;
@@ -114,10 +98,10 @@
 		justify-content: center;
 	}
 
-	.todo-item button:hover {
+	.delete-btn:hover {
 		background-color: #f6f8fa;
 	}
-	.todo-item button:hover .delete-svgIcon path {
+	.delete-btn:hover .delete-svgIcon path {
 		fill: var(--secondary-delete-icon-color);
 	}
 
