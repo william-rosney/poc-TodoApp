@@ -98,15 +98,15 @@
 		border: 1px solid var(--primary-btn-color);
 	}
 	.todo-list-enter-active {
-		animation: slide-in 0.8s ease-out;
+		animation: slide-in 0.5s ease;
 	}
 	.todo-list-leave-active {
-		animation: slide-out 0.3s ease-in;
+		animation: slide-out 0.5s ease;
 		position: absolute;
 		width: 93%;
 	}
 	.todo-list-move {
-		transition: all 0.8s ease;
+		transition: all 0.5s ease;
 	}
 
 	@keyframes slide-in {
