@@ -68,7 +68,6 @@
 	}
 	.todo-content {
 		padding: 20px 0;
-		/* background-color: red; */
 		overflow-wrap: break-word;
 		width: 85%;
 	}

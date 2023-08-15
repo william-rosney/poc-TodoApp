@@ -2,7 +2,8 @@
 	<main>
 		<div class="container">
 			<TodoForm />
-			<TodoList />
+			<TodoList v-if="!isLoading"/>
+			<DataLoader class="data-loader" v-else/>
 		</div>
 	</main>
 </template>
@@ -12,9 +13,9 @@
 	import TodoList from './components/TodoList.vue';
 	import { onMounted } from 'vue';
 	import { useTodos } from './composables/use-todos';
+	import DataLoader from './components/Loader/DataLoader.vue';
 
-
-	const { getTodos } = useTodos();
+	const { getTodos, isLoading } = useTodos();
 
 	onMounted(() => {
 		console.log('onMounted');
@@ -25,8 +26,7 @@
 <style scoped>
 	main {
 		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: center;
 		align-items: center;
 		height: 100vh;
 		background-color: #f6f8fa;
@@ -38,7 +38,13 @@
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		padding: 20px;
 		width: 600px;
-		margin-top: 10%;
 		height: 500px;
+		display: flex;
+		flex-direction: column;
+	}
+	.data-loader {
+		align-self: center;
+		margin-top: 15%;
+
 	}
 </style>
