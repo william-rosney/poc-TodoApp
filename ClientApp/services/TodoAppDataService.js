@@ -1,26 +1,28 @@
-import http from "../src/http-common";
+import http from '../src/http-common';
 
 class TodoAppDataService {
-  getAll() {
-    return http.get("/TodoTask");
-  }
+	getAll() {
+		return http.get('/TodoTask');
+	}
 
-  get(id) {
-    return http.get(`/TodoTask/${id}`);
-  }
+	get(id) {
+		return http.get(`/TodoTask/${id}`);
+	}
 
-  create(data) {
-    return http.post("/TodoTask", data);
-  }
+	create(data) {
+		return http.post('/TodoTask', data);
+	}
 
-  update(id, data) {
-    return http.put(`/TodoTask/${id}`, data);
-  }
+	update(id, data) {
+		return http.put(`/TodoTask/${id}`, data);
+	}
+	updateStatus(id, data) {
+		return http.put(`/TodoTask/updateStatus/${id}`, data);
+	}
 
-  delete(id) {
-    return http.delete(`/TodoTask/${id}`);
-  }
-
+	delete(id) {
+		return http.delete(`/TodoTask/${id}`);
+	}
 }
 
 export default new TodoAppDataService();

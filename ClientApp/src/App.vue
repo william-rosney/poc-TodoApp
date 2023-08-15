@@ -14,7 +14,7 @@
     import { onMounted } from 'vue';
     import { useTodos } from './composables/use-todos';
 
-    const { todos, getTodos } = useTodos()
+    const { getTodos } = useTodos()
 
     onMounted(() => {
         console.log("onMounted");
