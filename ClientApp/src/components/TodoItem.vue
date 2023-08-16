@@ -55,9 +55,6 @@
 		isDialogOpened.value = false;
 	}
 	onBeforeUnmount(() => {
-		// We need to update the lastStatusUpdate Client Side before doing it server side 
-		// in order to move the TodoItem directly at the right place
-		props.todo.lastStatusUpdate = Date.now();
 		if (!isDeleted.value) updateStatusTodo(props.todo);
 	});
 </script>

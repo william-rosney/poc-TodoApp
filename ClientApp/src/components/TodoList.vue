@@ -1,7 +1,6 @@
 <template>
 	<div class="todos-container">
 		<label>To do</label>
-		<!-- <h2 v-if="isTodosEmpty">Your To do list is empty</h2> -->
 		<TransitionGroup
 			class="todo-list"
 			tag="ol"
@@ -34,10 +33,6 @@
 	import TodoItem from './TodoItem.vue';
 
 	const { todos } = useTodos();
-
-	const isTodosEmpty = computed(() => {
-		return !todos.value.length > 0;
-	});
 
 	const sortedTodos = computed(() => {
 		return todos.value.sort(
