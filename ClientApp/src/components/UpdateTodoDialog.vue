@@ -175,13 +175,9 @@
 	}
 
 	@media screen and (min-width: 587px) and (max-width: 1023px) {
-		.update-dialog {
-			background-color: blue;
-		}
 	}
 	@media screen and (max-width: 586px) {
 		.update-dialog {
-			background-color: red;
 			width: 90%;
 
 		}
