@@ -1,27 +1,65 @@
 import http from '../src/http-common';
 
 class TodoAppDataService {
-	getAll() {
-		return http.get('/TodoTask');
+	async getAll() {
+		try {
+			const response = await http.get('/TodoTask');
+			console.log(response.data);
+			return response.data;
+		} catch (error) {
+			console.error(error);
+			return;
+		}
 	}
 
-	get(id) {
-		return http.get(`/TodoTask/${id}`);
+	async get(id) {
+		try {
+			const response = await http.get(`/TodoTask/${id}`);
+			console.log(response.data);
+			return response.data;
+		} catch (error) {
+			console.error(error);
+			return;
+		}
 	}
 
-	create(data) {
-		return http.post('/TodoTask', data);
+	async create(data) {
+		try {
+			const response = await http.post('/TodoTask', data);
+			console.log(response.data);
+		} catch (error) {
+			console.error(error);
+			return;
+		}
 	}
 
-	update(id, data) {
-		return http.put(`/TodoTask/${id}`, data);
+	async update(id, data) {
+		try {
+			const response = await http.put(`/TodoTask/${id}`, data);
+			console.log(response.data);
+		} catch (error) {
+			console.error(error);
+			return;
+		}
 	}
-	updateStatus(id, data) {
-		return http.put(`/TodoTask/updateStatus/${id}`, data);
+	async updateStatus(id, data) {
+		try {
+			const response = await http.put(`/TodoTask/updateStatus/${id}`, data);
+			console.log(response.data);
+		} catch (error) {
+			console.error(error);
+			return;
+		}
 	}
 
-	delete(id) {
-		return http.delete(`/TodoTask/${id}`);
+	async delete(id) {
+		try {
+			const response = await http.delete(`/TodoTask/${id}`);
+			console.log(response.data);
+		} catch (error) {
+			console.error(error);
+			return;
+		}
 	}
 }
 

@@ -31,7 +31,6 @@
 		if(newTodoTitle.value){
 			addTodo(newTodoTitle.value);
 			newTodoTitle.value = '';
-			console.log("OKAY");
 		}
 		input.value.focus();
 	}
