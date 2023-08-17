@@ -1,6 +1,7 @@
 <template>
 	<div class="todos-container">
 		<label>To do</label>
+		<!-- <h2 v-if="isTodosEmpty">Your To do list is empty</h2> -->
 		<TransitionGroup
 			class="todo-list"
 			tag="ol"
@@ -9,41 +10,45 @@
 				class="todo-item"
 				v-for="todo in uncompletedTodos"
 				:key="todo.id">
-				<TodoItem :todo="todo" />
+				<DummyTodoItem :todo="todo" />
 			</li>
 		</TransitionGroup>
 		<label>completed</label>
 		<TransitionGroup
 			class="todo-list"
 			tag="ol"
-			name="todo-list">
+			name="todo-list"
+			@beforeEnter="onBeforeEnter"
+			@enter="onEnter"
+			@beforeLeave="onBeforeLeave"
+			@leave="onLeave">
 			<li
 				class="todo-item"
 				v-for="todo in completedTodos"
 				:key="todo.id">
-				<TodoItem :todo="todo" />
+				<DummyTodoItem :todo="todo" />
 			</li>
 		</TransitionGroup>
 	</div>
 </template>
 
 <script setup>
-	import { computed } from 'vue';
-	import { useTodos } from '../composables/use-todos';
-	import TodoItem from './TodoItem.vue';
+	import { computed, ref } from 'vue';
+	import DummyTodoItem from './DummyTodoItem.vue'
+	const todos = ref([
+		{id:1, title:"1", isCompleted: false, date: new Date("2022-03-25")},
+		{id:2, title:"3", isCompleted: false, date: new Date("2022-03-27")},
+		{id:3, title:"4", isCompleted: false, date: new Date("2022-03-28")},
+		{id:4, title:"2", isCompleted: false, date: new Date("2022-03-26")},
+	])
 
-	const { todos } = useTodos();
 
 	const sortedTodos = computed(() => {
-		return todos.value.sort(
-			(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
-		);
+		return todos.value.sort((a,b) => a.date - b.date);
 	});
-
 	const uncompletedTodos = computed(() => {
 		return sortedTodos.value.filter((todo) => !todo.isCompleted);
 	});
-
 	const completedTodos = computed(() => {
 		return sortedTodos.value.filter((todo) => todo.isCompleted).reverse();
 	});
@@ -51,11 +56,11 @@
 
 <style scoped>
 	.todos-container {
-		height: 85%;
+		height: 100%;
 		overflow-y: scroll;
-		overflow-x: visible;
+		overflow: visible;
 		padding: 1px;
-		/* position: relative; */
+		position: relative;
 		/* border: 1px solid red; */
 	}
 
@@ -92,36 +97,30 @@
 	.todo-item:hover {
 		border: 1px solid var(--primary-btn-color);
 	}
+	.todo-list-enter-from {
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+	.todo-list-enter-to,
+	.todo-list-leave-from {
+		opacity: 1;
+		transform: translateX(0px);
+	}
 	.todo-list-enter-active {
-		animation: slide-in 0.5s ease;
+		transition: all 0.5s ease-out;
+		/* transition-delay: 3s; */
+	}
+	.todo-list-leave-to {
+		opacity: 0;
+		transform: translateX(30px);
 	}
 	.todo-list-leave-active {
-		animation: slide-out 0.5s ease;
+		transition: all 0.2s ease-in;
 		position: absolute;
 		width: 93%;
 	}
-	.todo-list-move {
-		transition: all 0.5s ease;
-	}
 
-	@keyframes slide-in {
-		from {
-			opacity: 0;
-			transform: translateX(-30px);
-		}
-		to {
-			opacity: 1;
-			transform: translateX(0px);
-		}
-	}
-	@keyframes slide-out {
-		from {
-			opacity: 1;
-			transform: translateX(0px);
-		}
-		to {
-			opacity: 0;
-			transform: translateX(30px);
-		}
+	.todo-list-move {
+		transition: all 0.8s ease;
 	}
 </style>

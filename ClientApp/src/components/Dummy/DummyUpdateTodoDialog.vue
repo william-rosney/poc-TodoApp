@@ -1,13 +1,12 @@
 <template>
 	<div
 		class="backdrop"
-		v-if="isOpen"
-		@click="closeDialog"></div>
+		v-if="isOpen"></div>
 	<Transition name="modal">
 		<dialog
 			class="update-dialog"
 			open
-			v-if="props.isOpen">
+			v-if="isOpen">
 			<h2>Todo details</h2>
 			<form @submit.prevent="saveUpdates">
 				<input
@@ -29,8 +28,7 @@
 </template>
 
 <script setup>
-	import { ref, onUpdated } from 'vue';
-	import { useTodos } from '../composables/use-todos';
+	import { ref } from 'vue';
 	const props = defineProps({
 		targetTodo: {
 			type: Object,
@@ -42,31 +40,23 @@
 		},
 	});
 
-	const { updateTodo } = useTodos();
 	const emits = defineEmits(['close']);
 
 	//Use spread syntax to create a new object with a different pointer reference
-	const todo = ref({ ...props.targetTodo });
+	const todo = ref(props.targetTodo);
 	const input = ref(null);
 	function saveUpdates() {
-		if(todo.value.title) {
-			console.log('saveUpdates()', todo.value);
-			updateTodo(todo.value);
-			closeDialog();
-		}
+		closeDialog();
 	}
 
 	function closeDialog() {
 		console.log('closeDialog()');
 		emits('close');
 	}
-	onUpdated(() => {
-		if(props.isOpen){
-			input.value.focus();
-			todo.value = {...props.targetTodo};
-			console.log("Modal update");
-		}
-	})
+
+	// onMounted(() => {
+	//     input.value.focus();
+	// })
 </script>
 
 <style scoped>
@@ -80,11 +70,11 @@
 		background-color: rgba(0, 0, 0, 0.75);
 	}
 	.update-dialog {
-		position: absolute;
-		/* top: 50%;
-		left: calc(30%); */
+		position: fixed;
+		top: 30vh;
 		width: 30rem;
-		/* margin: 0 auto; */
+		left: calc(50% - 15rem);
+		margin: 0;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 		border-radius: 8px;
 		padding: 1rem;
@@ -171,15 +161,6 @@
 		to {
 			opacity: 0;
 			transform: translateY(-50px) scale(0.9);
-		}
-	}
-
-	@media screen and (min-width: 587px) and (max-width: 1023px) {
-	}
-	@media screen and (max-width: 586px) {
-		.update-dialog {
-			width: 90%;
-
 		}
 	}
 </style>

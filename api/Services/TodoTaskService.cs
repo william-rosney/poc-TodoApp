@@ -45,6 +45,7 @@ namespace api.Services
         public void Create(TodoTaskCreateDTO model)
         {
             TodoTask newTodo = _mapper.Map<TodoTask>(model);
+            newTodo.LastStatusUpdate = newTodo.LastUpdate;
             _context.Todos.Add(newTodo);
             _context.SaveChanges();
         }
