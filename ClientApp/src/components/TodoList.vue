@@ -73,7 +73,7 @@
 		color: #6a737d;
 		width: auto;
 		z-index: 10;
-		border: 1px solid red;
+		border: 1px solid blue;
 	}
 
 	.todo-item:hover {
@@ -87,9 +87,9 @@
 		position: absolute;
 		width: 93%;
 	}
-	/* .todo-list-move {
+	.todo-list-move {
 		transition: all 0.5s ease;
-	} */
+	}
 
 	@keyframes slide-in {
 		from {

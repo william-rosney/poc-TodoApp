@@ -1,8 +1,12 @@
 <template>
 	<label class="container">
+		<!-- <input
+			type="checkbox"
+			v-model="props.todo.isCompleted" /> -->
 		<input
 			type="checkbox"
-			v-model="props.todo.isCompleted" />
+			@input="testCheck($event)"
+			:checked="props.todo.isCompleted" />
 		<div class="checkmark"></div>
 	</label>
 	<span
@@ -50,14 +54,22 @@
 		deleteTodo(props.todo.id);
 	}
 
+	function testCheck(event){
+		console.log(event.target.checked);
+		// props.todo.isCompleted = event.target.checked;
+		const newTodo = {...props.todo, isCompleted: event.target.checked};
+		updateStatusTodo(newTodo);
+
+	}
+
 	function closeDialog() {
 		console.log('CloseDialog() TodoItem');
 		isDialogOpened.value = false;
 	}
-	onBeforeMount(async () => {
-		props.todo.lastStatusUpdate = Date.now();
+	onBeforeUnmount(async () => {
+		// props.todo.lastStatusUpdate = Date.now();
 		// if (!isDeleted.value) updateStatusTodo(props.todo);
-		await updateStatusTodo(props.todo);
+		// await updateStatusTodo(props.todo);
 	});
 </script>
 
