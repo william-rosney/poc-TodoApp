@@ -6,7 +6,6 @@ const sortedTodos = computed(() => {
 	console.log("sortedTodo is updated", todos.value);
 	return todos.value.sort(
 		(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
-		// (a,b) => a.title - b.title
 	);
 });
 
