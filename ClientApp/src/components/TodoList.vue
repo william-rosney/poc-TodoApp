@@ -86,9 +86,9 @@
 		position: absolute;
 		width: 93%;
 	}
-	.todo-list-move {
+	/* .todo-list-move {
 		transition: all 0.5s ease;
-	}
+	} */
 
 	@keyframes slide-in {
 		from {

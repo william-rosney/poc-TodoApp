@@ -55,7 +55,7 @@
 		isDialogOpened.value = false;
 	}
 	onBeforeMount(async () => {
-		// props.todo.lastStatusUpdate = Date.now();
+		props.todo.lastStatusUpdate = Date.now();
 		// if (!isDeleted.value) updateStatusTodo(props.todo);
 		await updateStatusTodo(props.todo);
 	});
