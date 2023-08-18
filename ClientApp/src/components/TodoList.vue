@@ -73,6 +73,7 @@
 		color: #6a737d;
 		width: auto;
 		z-index: 10;
+		border: 1px solid red;
 	}
 
 	.todo-item:hover {
