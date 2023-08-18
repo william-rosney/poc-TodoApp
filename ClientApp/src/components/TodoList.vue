@@ -35,8 +35,10 @@
 	const { todos } = useTodos();
 
 	const sortedTodos = computed(() => {
-		return todos.value.sort(
-			(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
+		return todos.value
+		.sort(
+			// (a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
+			(a,b) => a.title - b.title
 		);
 	});
 

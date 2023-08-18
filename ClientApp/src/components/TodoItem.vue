@@ -55,7 +55,7 @@
 		isDialogOpened.value = false;
 	}
 	onBeforeUnmount(() => {
-		props.todo.lastStatusUpdate = Date.now();
+		// props.todo.lastStatusUpdate = Date.now();
 		if (!isDeleted.value) updateStatusTodo(props.todo);
 	});
 </script>
