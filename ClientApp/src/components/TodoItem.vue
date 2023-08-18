@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-	import { onBeforeUnmount,  ref } from 'vue';
+	import { onBeforeMount, onBeforeUnmount,  ref } from 'vue';
 	import { useTodos } from '../composables/use-todos';
 	import Updatetododialog from './UpdateTodoDialog.vue';
 
@@ -54,9 +54,10 @@
 		console.log('CloseDialog() TodoItem');
 		isDialogOpened.value = false;
 	}
-	onBeforeUnmount(() => {
+	onBeforeMount(async () => {
 		// props.todo.lastStatusUpdate = Date.now();
-		if (!isDeleted.value) updateStatusTodo(props.todo);
+		// if (!isDeleted.value) updateStatusTodo(props.todo);
+		await updateStatusTodo(props.todo);
 	});
 </script>
 

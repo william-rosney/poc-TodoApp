@@ -1,7 +1,22 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import TodoAppDataService from '../../services/TodoAppDataService';
 
 const todos = ref([]);
+const sortedTodos = computed(() => {
+	console.log("sortedTodo is updated", todos.value);
+	return todos.value.sort(
+		(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
+		// (a,b) => a.title - b.title
+	);
+});
+
+const uncompletedTodos = computed(() => {
+	return sortedTodos.value.filter((todo) => !todo.isCompleted);
+});
+
+const completedTodos = computed(() => {
+	return sortedTodos.value.filter((todo) => todo.isCompleted).reverse();
+});
 const isLoading = ref(true);
 
 export function useTodos() {
@@ -57,6 +72,8 @@ export function useTodos() {
 	return {
 		todos,
 		isLoading,
+		uncompletedTodos,
+		completedTodos,
 		getTodos,
 		addTodo,
 		deleteTodo,
