@@ -16,6 +16,7 @@ namespace api.Entities
         public string? Username { get; set; }
         [Required]
         public string? Password { get; set; }
+        public string? Token { get; set; }
         public ICollection<TodoTask> TodoList { get; set; }
     }
 }

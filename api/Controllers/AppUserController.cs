@@ -2,56 +2,77 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Authorization;
 using api.DTOs;
 using api.Entities;
 using api.Helpers;
+using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class AppUserController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IAppUserService _userService;
+        private readonly IJwtUtils _jwtUtils;
 
-        public AppUserController(DataContext context)
+
+        public AppUserController(DataContext context, IAppUserService userService, IJwtUtils jwtUtils)
         {
             _context = context;
+            _userService = userService;
+            _jwtUtils = jwtUtils;
         }
 
-        [HttpGet]
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticateRequest model)
+        {
+            var response = _userService.Authenticate(model);
+
+            if (response == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(response);
+        }
+
+        [HttpGet("GetUsers")]
         public IActionResult GetUsers(){
-            var usersWithTodoList = _context.AppUsers
-                .Include(user => user.TodoList)
-                .Select(user => new AppUser
-                {
-                    Id = user.Id,
-                    Username = user.Username,
-                    TodoList = user.TodoList.Select(task => new TodoTask
-                    {
-                        Id = task.Id,
-                        Title = task.Title,
-                        IsCompleted = task.IsCompleted,
-                        LastUpdate = task.LastUpdate,
-                        LastStatusUpdate = task.LastStatusUpdate
-                    }).ToList()
-                })
-                .ToList();
-                return Ok(usersWithTodoList);
+
+            return Ok(_userService.GetUsers());
         }
-
-        [HttpPost]
-        public IActionResult AddUser(AppUserRegisterDTO user){
-            var newUser = new AppUser {
+        [AllowAnonymous]
+        [HttpPost("Register")]
+        public IActionResult AddUser(AppUserRegisterDTO registerDTO){
+            if(_userService.UserExist(registerDTO.Username)){
+                return BadRequest("Username already taken");
+            }
+            var user = _userService.RegisterUser(registerDTO);
+            return Ok(new AppUser {
                 Username = user.Username,
-                Password = user.Password,
-            };
-            _context.AppUsers.Add(newUser);
-            _context.SaveChanges();
-            return Ok(new { message = "User created" });
+                Token = _jwtUtils.GenerateJwtToken(user)
+            });
 
+        }
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public IActionResult Login(AuthenticateRequest authRequest){
+
+            var authResponse = _userService.Authenticate(authRequest);
+
+            if (authResponse == null)
+                return Unauthorized("Invalid credentials");
+            
+            return Ok(new AppUserDTO{
+                Username = authResponse.Username,
+                Token = authResponse.Token,
+            });
         }
 
         [HttpGet("getTodoListByUserId/{id}")]
