@@ -21,44 +21,37 @@ namespace api.Controllers
             _todoService = todoService;
             _mapper = mapper;
         }
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("GetUserTodoList/{userId}")]
+        public IActionResult GetAll(int userId)
         {
-            var todos = _todoService.GetAll();
+            var todos = _todoService.GetAll(userId);
             return Ok(todos);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            var todo = _todoService.GetById(id);
-            return Ok(todo);
-        }
-
-        [HttpPost]
+        [HttpPost("CreateTodo")]
         public IActionResult Create(TodoTaskCreateDTO model)
         {
             _todoService.Create(model);
             return Ok(new { message = "TodoTask created" });
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Upadte(int id, TodoTaskUpdateDTO model)
+        [HttpPut("UpdateTodo")]
+        public IActionResult Upadte(TodoTaskUpdateDTO model)
         {
-            _todoService.Update(id, model);
+            _todoService.Update(model);
             return Ok(new { message = $"TodoTask Updated"});
         }
-        [HttpPut("updateStatus/{id}")]
-        public IActionResult UpadteStatus(int id, TodoTaskUpdateDTO model)
+        [HttpPut("UpdateTodoStatus")]
+        public IActionResult UpadteStatus(TodoTaskUpdateDTO model)
         {
-            _todoService.UpdateStatus(id, model);
+            _todoService.UpdateStatus(model);
             return Ok(new { message = $"TodoTask Status Updated"});
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpDelete("DeleteTodo")]
+        public IActionResult Delete(TodoTaskDeleteDTO model)
         {
-            _todoService.Delete(id);
+            _todoService.Delete(model);
             return Ok(new { message = "TodoTask deleted" });
         }
     }

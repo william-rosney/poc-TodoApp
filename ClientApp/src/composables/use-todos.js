@@ -19,9 +19,10 @@ const completedTodos = computed(() => {
 const isLoading = ref(true);
 
 export function useTodos() {
+	
 	async function getTodos() {
 		try {
-			todos.value = await TodoAppDataService.getAll();
+			todos.value = await TodoAppDataService.getAll(1);
 			isLoading.value = false;
 			return todos.value;
 		} catch (error) {
@@ -35,6 +36,7 @@ export function useTodos() {
 			await TodoAppDataService.create({
 				title: newTodoTitle,
 				isCompleted: false,
+				userId: 1
 			});
 			await getTodos();
 		} catch (error) {
@@ -42,26 +44,40 @@ export function useTodos() {
 		}
 	}
 
-	async function deleteTodo(id) {
+	async function deleteTodo(todo) {
 		try {
-			await TodoAppDataService.delete(id);
+			await TodoAppDataService.delete({
+				id: todo.id,
+				userId: todo.userId
+			});
 			await getTodos();
 		} catch (error) {
 			console.log(error);
 		}
 	}
 
-	async function updateTodo(newTodo) {
+	async function updateTodo(todo) {
 		try {
-			await TodoAppDataService.update(newTodo.id, newTodo);
+			await TodoAppDataService.update({
+				id: todo.id,
+				title: todo.title,
+				isCompleted: todo.isCompleted,
+				userId: todo.userId
+
+			});
 			await getTodos();
 		} catch (error) {
 			console.log(error);
 		}
 	}
-	async function updateStatusTodo(newTodo) {
+	async function updateStatusTodo(todo) {
 		try {
-			await TodoAppDataService.updateStatus(newTodo.id, newTodo);
+			await TodoAppDataService.updateStatus({
+				id: todo.id,
+				title: todo.title,
+				isCompleted: todo.isCompleted,
+				userId: todo.userId
+			});
 			await getTodos();
 		} catch (error) {
 			console.log(error);

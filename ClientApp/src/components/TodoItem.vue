@@ -45,7 +45,7 @@
 	const isDialogOpened = ref(false);
 
 	function onDelete() {
-		deleteTodo(props.todo.id);
+		deleteTodo(props.todo);
 	}
 
 	function toggleIsCompleted(event){

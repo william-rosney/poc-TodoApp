@@ -1,20 +1,12 @@
 import http from '../src/http-common';
 
 class TodoAppDataService {
-	async getAll() {
+	baseUrl = '/TodoTask';
+	async getAll(userId) {
 		try {
-			const response = await http.get('/TodoTask');
-			console.log(response.data);
-			return response.data;
-		} catch (error) {
-			console.error(error);
-			return;
-		}
-	}
-
-	async get(id) {
-		try {
-			const response = await http.get(`/TodoTask/${id}`);
+			const response = await http.get(
+				`${this.baseUrl}/GetUserTodoList/${userId}`
+			);
 			console.log(response.data);
 			return response.data;
 		} catch (error) {
@@ -25,7 +17,7 @@ class TodoAppDataService {
 
 	async create(data) {
 		try {
-			const response = await http.post('/TodoTask', data);
+			const response = await http.post(`${this.baseUrl}/CreateTodo`, data);
 			console.log(response.data);
 		} catch (error) {
 			console.error(error);
@@ -33,18 +25,18 @@ class TodoAppDataService {
 		}
 	}
 
-	async update(id, data) {
+	async update(data) {
 		try {
-			const response = await http.put(`/TodoTask/${id}`, data);
+			const response = await http.put(`${this.baseUrl}/UpdateTodo`, data);
 			console.log(response.data);
 		} catch (error) {
 			console.error(error);
 			return;
 		}
 	}
-	async updateStatus(id, data) {
+	async updateStatus(data) {
 		try {
-			const response = await http.put(`/TodoTask/updateStatus/${id}`, data);
+			const response = await http.put(`${this.baseUrl}/UpdateTodoStatus`, data);
 			console.log(response.data);
 		} catch (error) {
 			console.error(error);
@@ -52,9 +44,11 @@ class TodoAppDataService {
 		}
 	}
 
-	async delete(id) {
+	async delete(todoData) {
 		try {
-			const response = await http.delete(`/TodoTask/${id}`);
+			const response = await http.delete(`${this.baseUrl}/DeleteTodo`, {
+				data: todoData
+			});
 			console.log(response.data);
 		} catch (error) {
 			console.error(error);
