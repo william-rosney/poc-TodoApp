@@ -3,17 +3,29 @@ import TodoAppDataService from '../../services/TodoAppDataService';
 import { useAuth } from './use-auth';
 
 const todos = ref([]);
-const sortedTodos = computed(() => {
-	return todos.value.sort(
-		(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
-	);
-});
+// const sortedTodos = computed(() => {
+// 	console.log('sorted updated');
+// 	return todos.value.sort(
+// 		(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
+// 	);
+// });
 
 const uncompletedTodos = computed(() => {
-	return sortedTodos.value.filter((todo) => !todo.isCompleted);
+	const newTodos = todos.value.filter((todo) => !todo.isCompleted).sort(
+		(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
+	);
+	console.log('uncompleted updated', newTodos);
+	return newTodos;
 });
 const completedTodos = computed(() => {
-	return sortedTodos.value.filter((todo) => todo.isCompleted).reverse();
+	const newTodos = todos.value
+		.filter((todo) => todo.isCompleted)
+		.sort(
+			(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
+		)
+		.reverse();
+	console.log('completed updated', newTodos);
+	return newTodos;
 });
 
 const isLoading = ref(true);
