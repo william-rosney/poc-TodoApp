@@ -31,7 +31,7 @@ namespace api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("authenticate")]
+        [HttpPost("Authenticate")]
         public IActionResult Authenticate(AuthenticateRequest model)
         {
             var response = _userService.Authenticate(model);
@@ -49,19 +49,20 @@ namespace api.Controllers
         }
         [AllowAnonymous]
         [HttpPost("Register")]
-        public IActionResult AddUser(AppUserRegisterDTO registerDTO){
+        public IActionResult Register(AppUserRegisterDTO registerDTO){
             if(_userService.UserExist(registerDTO.Username)){
-                return BadRequest("Username already taken");
+                return BadRequest("Username Already exist");
             }
             var user = _userService.RegisterUser(registerDTO);
             return Ok(new AppUser {
+                Id = user.Id,
                 Username = user.Username,
                 Token = _jwtUtils.GenerateJwtToken(user)
             });
 
         }
-        [AllowAnonymous]
         [HttpPost("Login")]
+        [AllowAnonymous]
         public IActionResult Login(AuthenticateRequest authRequest){
 
             var authResponse = _userService.Authenticate(authRequest);
@@ -70,15 +71,19 @@ namespace api.Controllers
                 return Unauthorized("Invalid credentials");
             
             return Ok(new AppUserDTO{
+                Id = authResponse.Id,
                 Username = authResponse.Username,
                 Token = authResponse.Token,
             });
         }
 
-        [HttpGet("getTodoListByUserId/{id}")]
-        public IActionResult GetTodoListByUserId(int id){
-            var user = _context.AppUsers.Include(t => t.TodoList).SingleOrDefault(user => user.Id == id);
-            return Ok(user);
+        [HttpDelete("DeleteUser/{id}")]
+        [AllowAnonymous]
+        public IActionResult DeleteUser(int id){
+            _userService.DeleteUser(id);
+            return Ok(new {
+                message = $"User id:{id} deleted",
+            });
         }
     }
 }

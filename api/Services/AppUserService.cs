@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Authorization;
 using api.DTOs;
 using api.Entities;
 using api.Helpers;
 using api.Models;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
 
 namespace api.Services
 {
@@ -67,7 +61,11 @@ namespace api.Services
         }
         public void DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            AppUser userToDelete = _context.AppUsers.SingleOrDefault(user => user.Id == id);
+            if(userToDelete != null) {
+                _context.AppUsers.Remove(userToDelete);
+                _context.SaveChanges();
+            }
         }
 
         public bool UserExist(string username)

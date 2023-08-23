@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using api.Services;
 using api.DTOs;
+using api.Authorization;
 
 namespace api.Controllers
 {
     
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class TodoTaskController : ControllerBase
     {
         private readonly ITodoTaskService _todoService;

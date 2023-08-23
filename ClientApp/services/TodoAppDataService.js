@@ -11,7 +11,6 @@ class TodoAppDataService {
 			return response.data;
 		} catch (error) {
 			console.error(error);
-			return;
 		}
 	}
 
@@ -21,7 +20,6 @@ class TodoAppDataService {
 			console.log(response.data);
 		} catch (error) {
 			console.error(error);
-			return;
 		}
 	}
 
@@ -31,7 +29,6 @@ class TodoAppDataService {
 			console.log(response.data);
 		} catch (error) {
 			console.error(error);
-			return;
 		}
 	}
 	async updateStatus(data) {
@@ -40,19 +37,17 @@ class TodoAppDataService {
 			console.log(response.data);
 		} catch (error) {
 			console.error(error);
-			return;
 		}
 	}
 
 	async delete(todoData) {
 		try {
 			const response = await http.delete(`${this.baseUrl}/DeleteTodo`, {
-				data: todoData
+				data: todoData,
 			});
 			console.log(response.data);
 		} catch (error) {
 			console.error(error);
-			return;
 		}
 	}
 }

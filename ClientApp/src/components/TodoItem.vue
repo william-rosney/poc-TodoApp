@@ -48,10 +48,9 @@
 		deleteTodo(props.todo);
 	}
 
-	function toggleIsCompleted(event){
-		const newTodo = {...props.todo, isCompleted: event.target.checked};
+	function toggleIsCompleted(event) {
+		const newTodo = { ...props.todo, isCompleted: event.target.checked };
 		updateStatusTodo(newTodo);
-
 	}
 
 	function onClose() {
@@ -169,5 +168,4 @@
 	.delete-svgIcon path:hover {
 		fill: var(--secondary-delete-icon-color);
 	}
-
 </style>
