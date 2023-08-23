@@ -1,7 +1,7 @@
 <template>
 	<NavBar v-if="isAuthenticated" />
 	<main>
-		<BaseCardContainer>
+		<BaseCardContainer class="card">
 			<UserTodoList v-if="isAuthenticated"></UserTodoList>
 			<UserAuth v-else>
 				<AuthenticationForm />
@@ -33,4 +33,11 @@
 		height: 100vh;
 		background-color: #f6f8fa;
 	}
+
+	@media screen and (max-width: 767px) {
+		.card {
+			width: 80%;
+		}
+	}
+
 </style>

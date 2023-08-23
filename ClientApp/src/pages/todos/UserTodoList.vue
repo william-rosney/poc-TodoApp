@@ -40,7 +40,9 @@
 	}
 	@media screen and (max-width: 767px) {
 		.container {
-			width: 80%;
+			margin-left: auto;
+			margin-right: auto;
+			width: 95%;
 		}
 	}
 </style>
