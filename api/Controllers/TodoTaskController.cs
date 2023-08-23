@@ -29,21 +29,21 @@ namespace api.Controllers
         [HttpPost("CreateTodo")]
         public IActionResult Create(TodoTaskCreateDTO model)
         {
-            _todoService.Create(model);
-            return Ok(new { message = "TodoTask created" });
+            TodoTaskDTO newTodo = _todoService.Create(model);
+            return Ok(newTodo);
         }
 
         [HttpPut("UpdateTodo")]
         public IActionResult Upadte(TodoTaskUpdateDTO model)
         {
-            _todoService.Update(model);
-            return Ok(new { message = $"TodoTask Updated"});
+            TodoTaskDTO updatedTodo = _todoService.Update(model);
+            return Ok(updatedTodo);
         }
         [HttpPut("UpdateTodoStatus")]
         public IActionResult UpadteStatus(TodoTaskUpdateDTO model)
         {
-            _todoService.UpdateStatus(model);
-            return Ok(new { message = $"TodoTask Status Updated"});
+            TodoTaskDTO updatedTodo = _todoService.UpdateStatus(model);
+            return Ok(updatedTodo);
         }
 
         [HttpDelete("DeleteTodo")]

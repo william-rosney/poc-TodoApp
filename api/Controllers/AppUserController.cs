@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Authorization;
 using api.DTOs;
 using api.Entities;
@@ -9,7 +5,6 @@ using api.Helpers;
 using api.Models;
 using api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
