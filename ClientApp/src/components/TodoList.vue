@@ -28,25 +28,11 @@
 </template>
 
 <script setup>
-	import { computed } from 'vue';
 	import { useTodos } from '../composables/use-todos';
 	import TodoItem from './TodoItem.vue';
 
-	const { todos } = useTodos();
+	const { uncompletedTodos, completedTodos } = useTodos();
 
-	const sortedTodos = computed(() => {
-		return todos.value.sort(
-			(a, b) => new Date(a.lastStatusUpdate) - new Date(b.lastStatusUpdate)
-		);
-	});
-
-	const uncompletedTodos = computed(() => {
-		return sortedTodos.value.filter((todo) => !todo.isCompleted);
-	});
-
-	const completedTodos = computed(() => {
-		return sortedTodos.value.filter((todo) => todo.isCompleted).reverse();
-	});
 </script>
 
 <style scoped>

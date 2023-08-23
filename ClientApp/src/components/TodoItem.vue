@@ -2,7 +2,8 @@
 	<label class="container">
 		<input
 			type="checkbox"
-			v-model="props.todo.isCompleted" />
+			@input="toggleIsCompleted($event)"
+			:checked="props.todo.isCompleted" />
 		<div class="checkmark"></div>
 	</label>
 	<span
@@ -25,11 +26,11 @@
 		v-if="!props.todo.isCompleted"
 		:target-todo="props.todo"
 		:is-open="isDialogOpened"
-		@close="closeDialog" />
+		@close="onClose" />
 </template>
 
 <script setup>
-	import { onBeforeUnmount,  ref } from 'vue';
+	import { ref } from 'vue';
 	import { useTodos } from '../composables/use-todos';
 	import Updatetododialog from './UpdateTodoDialog.vue';
 
@@ -43,20 +44,19 @@
 	});
 	const isDialogOpened = ref(false);
 
-	const isDeleted = ref(false);
-
 	function onDelete() {
-		isDeleted.value = true;
-		deleteTodo(props.todo.id);
+		deleteTodo(props.todo);
 	}
 
-	function closeDialog() {
+	function toggleIsCompleted(event) {
+		const newTodo = { ...props.todo, isCompleted: event.target.checked };
+		updateStatusTodo(newTodo);
+	}
+
+	function onClose() {
 		console.log('CloseDialog() TodoItem');
 		isDialogOpened.value = false;
 	}
-	onBeforeUnmount(() => {
-		if (!isDeleted.value) updateStatusTodo(props.todo);
-	});
 </script>
 
 <style scoped>
@@ -168,5 +168,4 @@
 	.delete-svgIcon path:hover {
 		fill: var(--secondary-delete-icon-color);
 	}
-
 </style>

@@ -22,5 +22,6 @@ namespace api.Helpers
             options.UseSqlite(Configuration.GetConnectionString("WebApiDatabase"));
         }
         public DbSet<TodoTask> Todos { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
     }
 }
