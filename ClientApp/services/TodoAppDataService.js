@@ -18,6 +18,7 @@ class TodoAppDataService {
 		try {
 			const response = await http.post(`${this.baseUrl}/CreateTodo`, data);
 			console.log(response.data);
+			return response.data;
 		} catch (error) {
 			console.error(error);
 		}
@@ -27,6 +28,7 @@ class TodoAppDataService {
 		try {
 			const response = await http.put(`${this.baseUrl}/UpdateTodo`, data);
 			console.log(response.data);
+			return response.data;
 		} catch (error) {
 			console.error(error);
 		}
@@ -35,6 +37,7 @@ class TodoAppDataService {
 		try {
 			const response = await http.put(`${this.baseUrl}/UpdateTodoStatus`, data);
 			console.log(response.data);
+			return response.data;
 		} catch (error) {
 			console.error(error);
 		}

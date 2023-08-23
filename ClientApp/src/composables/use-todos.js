@@ -32,39 +32,61 @@ export function useTodos() {
 	}
 
 	async function addTodo(newTodoTitle) {
-		await TodoAppDataService.create({
-			title: newTodoTitle,
-			isCompleted: false,
-			userId: userId.value,
-		});
-		await getTodos();
+		try {
+			const newTodo = await TodoAppDataService.create({
+				title: newTodoTitle,
+				isCompleted: false,
+				userId: userId.value,
+			});
+			todos.value.push(newTodo);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	async function deleteTodo(todo) {
-		await TodoAppDataService.delete({
-			id: todo.id,
-			userId: todo.userId,
-		});
-		await getTodos();
+		try {
+			await TodoAppDataService.delete({
+				id: todo.id,
+				userId: todo.userId,
+			});
+			const todoIndex = todos.value.findIndex((_todo) => _todo.id === todo.id);
+			todos.value.splice(todoIndex, 1);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	async function updateTodo(todo) {
-		await TodoAppDataService.update({
-			id: todo.id,
-			title: todo.title,
-			isCompleted: todo.isCompleted,
-			userId: todo.userId,
-		});
-		await getTodos();
+		try {
+			const updatedTodo = await TodoAppDataService.update({
+				id: todo.id,
+				title: todo.title,
+				isCompleted: todo.isCompleted,
+				userId: todo.userId,
+			});
+			const todoIndex = todos.value.findIndex((_todo) => _todo.id === todo.id);
+			todos.value[todoIndex] = updatedTodo;
+			console.log(todos.value);
+		} catch (error) {
+			console.log(error);
+		}
+		// await getTodos();
 	}
 	async function updateStatusTodo(todo) {
-		await TodoAppDataService.updateStatus({
-			id: todo.id,
-			title: todo.title,
-			isCompleted: todo.isCompleted,
-			userId: todo.userId,
-		});
-		await getTodos();
+		try {
+			const updatedTodo = await TodoAppDataService.updateStatus({
+				id: todo.id,
+				title: todo.title,
+				isCompleted: todo.isCompleted,
+				userId: todo.userId,
+			});
+			const todoIndex = todos.value.findIndex((_todo) => _todo.id === todo.id);
+			todos.value[todoIndex] = updatedTodo;
+			console.log(todos.value);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	return {
