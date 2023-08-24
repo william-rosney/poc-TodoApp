@@ -4,7 +4,7 @@
 		<BaseCardContainer class="card">
 			<UserTodoList v-if="isAuthenticated"></UserTodoList>
 			<UserAuth v-else>
-				<AuthenticationForm />
+				<AuthenticationForm class="auth"/>
 			</UserAuth>
 		</BaseCardContainer>
 	</main>
@@ -37,6 +37,11 @@
 	@media screen and (max-width: 767px) {
 		.card {
 			width: 80%;
+		}
+		.auth {
+			margin-left: auto;
+			margin-right: auto;
+			width: 95%;
 		}
 	}
 
