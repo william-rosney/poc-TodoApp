@@ -8,7 +8,7 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 	import TodoForm from '../../components/Todo/TodoForm.vue';
 	import TodoList from '../../components/Todo/TodoList.vue';
 	import DataLoader from '../../components/Loader/DataLoader.vue';

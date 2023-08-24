@@ -1,25 +1,38 @@
-import { computed, onBeforeMount, ref } from 'vue';
-import AuthenticationService from '../../services/AuthenticationService.js';
+import { computed, ref, type Ref } from 'vue';
+import AuthenticationService, {
+	type Credentials,
+	type User,
+} from '../../services/AuthenticationService.js';
 
-const userId = ref(null);
-const token = ref(null);
-const username = ref(null);
+const userId: Ref<number | string | null> = ref(null);
+const token: Ref<string | null> = ref(null);
+const username: Ref<string | null> = ref(null);
 const isAuthenticated = computed(() => {
 	return !!token.value;
 });
 
+interface AuthData {
+	username: string;
+	password: string;
+	authMode: string;
+}
+
 export function useAuth() {
-	async function auth(payload) {
-		console.log('Mode', payload.mode);
+	async function auth(payload: AuthData) {
+		console.log('Mode', payload.authMode);
+
+		const credentials: Credentials = {
+			username: payload.username,
+			password: payload.password,
+		};
 		const response =
-			payload.mode === 'login'
-				? await AuthenticationService.login(payload)
-				: await AuthenticationService.signup(payload);
+			payload.authMode === 'login'
+				? ((await AuthenticationService.login(credentials)) as User)
+				: ((await AuthenticationService.signup(credentials)) as User);
 
 		localStorage.setItem('token', response.token);
-		localStorage.setItem('userId', response.id);
+		localStorage.setItem('userId', response.id as string);
 		localStorage.setItem('username', response.username);
-
 		userId.value = response.id;
 		token.value = response.token;
 		username.value = response.username;

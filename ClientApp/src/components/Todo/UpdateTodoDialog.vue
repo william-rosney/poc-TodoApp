@@ -28,28 +28,25 @@
 	</Transition>
 </template>
 
-<script setup>
+<script setup lang="ts">
 	import { ref, onUpdated } from 'vue';
 	import { useTodos } from '../../composables/use-todos';
-	const props = defineProps({
-		targetTodo: {
-			type: Object,
-			required: true,
-		},
-		isOpen: {
-			type: Boolean,
-			required: true,
-		},
-	});
+	import type { UpdateTodo } from '../../../services/TodoAppDataService';
+	const props = defineProps<{
+		targetTodo: UpdateTodo;
+		isOpen: boolean;
+	}>();
 
 	const { updateTodo } = useTodos();
-	const emits = defineEmits(['close']);
+	const emits = defineEmits<{
+		(e: 'close'): void
+	}>();
 
 	//Use spread syntax to create a new object with a different pointer reference
-	const todo = ref({ ...props.targetTodo });
-	const input = ref(null);
+	const todo = ref<UpdateTodo>({ ...props.targetTodo });
+	const input = ref<HTMLInputElement | null>(null);
 	function saveUpdates() {
-		if(todo.value.title) {
+		if (todo.value.title) {
 			console.log('saveUpdates()', todo.value);
 			updateTodo(todo.value);
 			closeDialog();
@@ -61,12 +58,12 @@
 		emits('close');
 	}
 	onUpdated(() => {
-		if(props.isOpen){
-			input.value.focus();
-			todo.value = {...props.targetTodo};
-			console.log("Modal update");
+		if (props.isOpen) {
+			input.value?.focus();
+			todo.value = { ...props.targetTodo };
+			console.log('Modal update');
 		}
-	})
+	});
 </script>
 
 <style scoped>
@@ -179,7 +176,6 @@
 	@media screen and (max-width: 586px) {
 		.update-dialog {
 			width: 90%;
-
 		}
 	}
 </style>

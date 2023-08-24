@@ -10,7 +10,7 @@
 	</main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 	import UserAuth from './pages/auth/UserAuth.vue';
 	import UserTodoList from './pages/todos/UserTodoList.vue';
 	import BaseCardContainer from './components/Base/BaseCardContainer.vue';

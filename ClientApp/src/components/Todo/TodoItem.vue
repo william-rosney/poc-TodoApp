@@ -29,27 +29,33 @@
 		@close="onClose" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 	import { ref } from 'vue';
 	import { useTodos } from '../../composables/use-todos';
 	import Updatetododialog from './UpdateTodoDialog.vue';
+	import {
+		type Todo,
+		type UpdateTodo,
+	} from '../../../services/TodoAppDataService';
 
 	const { deleteTodo, updateStatusTodo } = useTodos();
 
-	const props = defineProps({
-		todo: {
-			type: Object,
-			required: true,
-		},
-	});
-	const isDialogOpened = ref(false);
+	const props = defineProps<{
+		todo: Todo;
+	}>();
+	const isDialogOpened = ref<boolean>(false);
 
 	function onDelete() {
-		deleteTodo(props.todo);
+		deleteTodo({ id: props.todo.id, userId: props.todo.userId });
 	}
 
-	function toggleIsCompleted(event) {
-		const newTodo = { ...props.todo, isCompleted: event.target.checked };
+	function toggleIsCompleted(event: Event) {
+		const newTodo = {
+			id: props.todo.id,
+			title: props.todo.title,
+			userId: props.todo.userId,
+			isCompleted: (event.target as HTMLInputElement).checked,
+		} as UpdateTodo;
 		updateStatusTodo(newTodo);
 	}
 

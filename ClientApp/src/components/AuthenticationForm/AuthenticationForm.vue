@@ -21,7 +21,7 @@
 		<span
 			v-if="!!error"
 			class="error-msg"
-			>{{ error.response.data }}</span
+			>{{ error?.response?.data }}</span
 		>
 		<button>{{ submitButtonCaption }}</button>
 		<a
@@ -32,27 +32,28 @@
 	</form>
 </template>
 
-<script setup>
-	import { computed, ref } from 'vue';
+<script setup lang="ts">
+	import { computed, ref, type ComputedRef, type Ref } from 'vue';
 	import { useAuth } from '../../composables/use-auth';
 	import DataLoader from '../Loader/DataLoader.vue';
+	import { AxiosError, type Axios } from 'axios';
 
-	const authMode = ref('login');
-	const isFormValid = ref(true);
-	const username = ref('');
-	const password = ref('');
-	const isLoading = ref(false);
-	const error = ref('');
+	const authMode = ref<string>('login');
+	const isFormValid = ref<boolean>(true);
+	const username = ref<string>('');
+	const password = ref<string>('');
+	const isLoading = ref<boolean>(false);
+	const error = ref<AxiosError | null>(null);
 	const { auth } = useAuth();
 
-	const submitButtonCaption = computed(() => {
+	const submitButtonCaption = computed<string>(() => {
 		return authMode.value === 'login' ? 'Sign In ' : 'Sign up';
 	});
-	const formTitleCaption = computed(() => {
+	const formTitleCaption = computed<string>(() => {
 		return authMode.value === 'login' ? 'Sign In !' : 'Welcome !';
 	});
 
-	const switchAuthModeCaption = computed(() => {
+	const switchAuthModeCaption = computed<string>(() => {
 		return authMode.value === 'login'
 			? 'Sign up to register'
 			: 'Already an account ? Sign in ';
@@ -66,7 +67,7 @@
 		}
 	}
 
-	async function submitForm() {
+	async function submitForm(): Promise<void> {
 		isFormValid.value = true;
 		if (username.value === null || password.value.length < 2) {
 			isFormValid.value = false;
@@ -79,10 +80,10 @@
 			await auth({
 				username: username.value,
 				password: password.value,
-				mode: authMode.value,
+				authMode: authMode.value,
 			});
 		} catch (err) {
-			error.value = err;
+			error.value = err as AxiosError;
 			console.log('ERROR Form', err);
 		}
 		isLoading.value = false;
