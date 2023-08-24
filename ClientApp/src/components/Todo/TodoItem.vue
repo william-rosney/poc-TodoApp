@@ -31,7 +31,7 @@
 
 <script setup>
 	import { ref } from 'vue';
-	import { useTodos } from '../composables/use-todos';
+	import { useTodos } from '../../composables/use-todos';
 	import Updatetododialog from './UpdateTodoDialog.vue';
 
 	const { deleteTodo, updateStatusTodo } = useTodos();

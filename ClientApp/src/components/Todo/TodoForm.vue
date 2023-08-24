@@ -21,7 +21,7 @@
 
 <script setup>
 	import { onMounted, ref } from 'vue';
-	import { useTodos } from '../composables/use-todos';
+	import { useTodos } from '../../composables/use-todos';
 
 	const { addTodo } = useTodos();
 	const newTodoTitle = ref('');

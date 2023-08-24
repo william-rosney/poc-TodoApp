@@ -9,8 +9,8 @@
 </template>
 
 <script setup>
-	import TodoForm from '../../components/TodoForm.vue';
-	import TodoList from '../../components/TodoList.vue';
+	import TodoForm from '../../components/Todo/TodoForm.vue';
+	import TodoList from '../../components/Todo/TodoList.vue';
 	import DataLoader from '../../components/Loader/DataLoader.vue';
 	import { onMounted } from 'vue';
 	import { useTodos } from '../../composables/use-todos';

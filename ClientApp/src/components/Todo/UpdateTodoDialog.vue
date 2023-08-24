@@ -30,7 +30,7 @@
 
 <script setup>
 	import { ref, onUpdated } from 'vue';
-	import { useTodos } from '../composables/use-todos';
+	import { useTodos } from '../../composables/use-todos';
 	const props = defineProps({
 		targetTodo: {
 			type: Object,

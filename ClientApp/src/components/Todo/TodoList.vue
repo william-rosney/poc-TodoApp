@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-	import { useTodos } from '../composables/use-todos';
+	import { useTodos } from '../../composables/use-todos';
 	import TodoItem from './TodoItem.vue';
 
 	const { uncompletedTodos, completedTodos } = useTodos();
