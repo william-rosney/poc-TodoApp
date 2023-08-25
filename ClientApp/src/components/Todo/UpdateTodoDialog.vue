@@ -31,7 +31,7 @@
 <script setup lang="ts">
 	import { ref, onUpdated } from 'vue';
 	import { useTodos } from '../../composables/use-todos';
-	import type { UpdateTodo } from '../../../services/TodoAppDataService';
+	import type { UpdateTodo } from '../../types/todo-types';
 	const props = defineProps<{
 		targetTodo: UpdateTodo;
 		isOpen: boolean;
@@ -39,7 +39,7 @@
 
 	const { updateTodo } = useTodos();
 	const emits = defineEmits<{
-		(e: 'close'): void
+		(e: 'close'): void;
 	}>();
 
 	//Use spread syntax to create a new object with a different pointer reference

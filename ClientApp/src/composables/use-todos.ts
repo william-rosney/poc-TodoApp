@@ -35,14 +35,17 @@ const completedTodos: ComputedRef<Todo[]> = computed((): Todo[] => {
 	return newTodos;
 });
 
-const isLoading = ref<boolean>(true);
+const isLoading = ref<boolean>(false);
 const { userId } = useAuth();
 
 export function useTodos() {
 	async function getTodos(): Promise<Todo[] | undefined> {
 		try {
+			isLoading.value = true;
 			console.log('getTodos', userId.value);
-			todos.value = await TodoAppDataService.getAll(userId.value as number);
+			todos.value = (await TodoAppDataService.getAll(
+				userId.value as number
+			)) as Todo[];
 			isLoading.value = false;
 			return todos.value;
 		} catch (error) {
@@ -67,7 +70,9 @@ export function useTodos() {
 	async function deleteTodo(todo: DeleteTodo): Promise<void> {
 		try {
 			await TodoAppDataService.delete(todo);
-			const todoIndex = todos.value.findIndex((_todo) => _todo.id === todo.id);
+			const todoIndex: number = todos.value.findIndex(
+				(_todo: Todo) => _todo.id === todo.id
+			);
 			todos.value.splice(todoIndex, 1);
 		} catch (error) {
 			console.log(error);
@@ -77,18 +82,21 @@ export function useTodos() {
 	async function updateTodo(todo: UpdateTodo): Promise<void> {
 		try {
 			const updatedTodo = (await TodoAppDataService.update(todo)) as Todo;
-			const todoIndex = todos.value.findIndex((_todo) => _todo.id === todo.id);
+			const todoIndex: number = todos.value.findIndex(
+				(_todo: Todo) => _todo.id === todo.id
+			);
 			todos.value[todoIndex] = updatedTodo;
 			console.log(todos.value);
 		} catch (error) {
 			console.log(error);
 		}
-		// await getTodos();
 	}
 	async function updateStatusTodo(todo: UpdateTodo): Promise<void> {
 		try {
 			const updatedTodo = (await TodoAppDataService.updateStatus(todo)) as Todo;
-			const todoIndex = todos.value.findIndex((_todo) => _todo.id === todo.id);
+			const todoIndex: number = todos.value.findIndex(
+				(_todo: Todo) => _todo.id === todo.id
+			);
 			todos.value[todoIndex] = updatedTodo;
 			console.log(todos.value);
 		} catch (error) {

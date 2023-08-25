@@ -2,8 +2,8 @@ import http from '../src/http-common';
 import type { CreateTodo, DeleteTodo, Todo, UpdateTodo } from '../src/types/todo-types';
 
 class TodoAppDataService {
-	baseUrl = '/TodoTask';
-	async getAll(userId: number) {
+	baseUrl: string = '/TodoTask';
+	async getAll(userId: number):Promise<Todo[] | undefined> {
 		try {
 			const response = await http.get(
 				`${this.baseUrl}/GetUserTodoList/${userId}`

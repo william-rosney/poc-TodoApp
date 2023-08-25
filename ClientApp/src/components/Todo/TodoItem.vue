@@ -33,10 +33,7 @@
 	import { ref } from 'vue';
 	import { useTodos } from '../../composables/use-todos';
 	import Updatetododialog from './UpdateTodoDialog.vue';
-	import {
-		type Todo,
-		type UpdateTodo,
-	} from '../../../services/TodoAppDataService';
+	import type { Todo, UpdateTodo } from '../../types/todo-types';
 
 	const { deleteTodo, updateStatusTodo } = useTodos();
 
@@ -50,12 +47,12 @@
 	}
 
 	function toggleIsCompleted(event: Event) {
-		const newTodo = {
+		const newTodo: UpdateTodo = {
 			id: props.todo.id,
 			title: props.todo.title,
 			userId: props.todo.userId,
 			isCompleted: (event.target as HTMLInputElement).checked,
-		} as UpdateTodo;
+		};
 		updateStatusTodo(newTodo);
 	}
 

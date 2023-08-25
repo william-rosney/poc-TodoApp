@@ -3,7 +3,7 @@ import type { Credentials, User } from '../src/types/auth-types';
 
 
 class AuthenticationService {
-	baseUrl = '/AppUser';
+	baseUrl: string = '/AppUser';
 
 	async signup(credentials: Credentials): Promise<User | undefined> {
 		try {

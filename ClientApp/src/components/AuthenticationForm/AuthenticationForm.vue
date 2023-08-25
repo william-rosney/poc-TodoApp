@@ -37,6 +37,7 @@
 	import { useAuth } from '../../composables/use-auth';
 	import DataLoader from '../Loader/DataLoader.vue';
 	import { AxiosError, type Axios } from 'axios';
+import type { AuthData } from '../../types/auth-types';
 
 	const authMode = ref<string>('login');
 	const isFormValid = ref<boolean>(true);
@@ -81,7 +82,7 @@
 				username: username.value,
 				password: password.value,
 				authMode: authMode.value,
-			});
+			} as AuthData);
 		} catch (err) {
 			error.value = err as AxiosError;
 			console.log('ERROR Form', err);

@@ -1,22 +1,17 @@
 import { computed, ref, type Ref } from 'vue';
-import type { Credentials, User } from '../types/auth-types';
+import type { AuthData, Credentials, User } from '../types/auth-types';
 import AuthenticationService from '../../services/AuthenticationService';
 
-const userId: Ref<number | string | null> = ref(null);
-const token: Ref<string | null> = ref(null);
-const username: Ref<string | null> = ref(null);
-const isAuthenticated = computed(() => {
+const userId = ref<number | string | null>(null);
+const token = ref<string | null>(null);
+const username = ref<string | null>(null);
+const isAuthenticated = computed<boolean>(() => {
 	return !!token.value;
 });
 
-interface AuthData {
-	username: string;
-	password: string;
-	authMode: string;
-}
 
 export function useAuth() {
-	async function auth(payload: AuthData) {
+	async function auth(payload: AuthData): Promise<void> {
 		console.log('Mode', payload.authMode);
 
 		const credentials: Credentials = {
@@ -37,9 +32,9 @@ export function useAuth() {
 	}
 
 	function tryLogin() {
-		const _token = localStorage.getItem('token');
-		const _userId = localStorage.getItem('userId');
-		const _username = localStorage.getItem('username');
+		const _token: string | null = localStorage.getItem('token');
+		const _userId: string | null = localStorage.getItem('userId');
+		const _username: string | null = localStorage.getItem('username');
 
 		if (_token && _userId) {
 			token.value = _token;
