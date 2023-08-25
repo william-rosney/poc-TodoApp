@@ -11,19 +11,19 @@
 			name="username"
 			v-model="username"
 			class="form-input"
-			:class="{ invalid: !isFormValid }" />
+			:class="{ invalid: !!error }" />
 		<label for="password">Password</label>
 		<input
 			type="password"
 			v-model="password"
 			class="form-input"
-			:class="{ invalid: !isFormValid }" />
+			:class="{ invalid: !!error }" />
 		<span
 			v-if="!!error"
 			class="error-msg"
 			>{{ error?.response?.data }}</span
 		>
-		<button>{{ submitButtonCaption }}</button>
+		<button :disabled="!isFormValid">{{ submitButtonCaption }}</button>
 		<a
 			href="#"
 			@click="switchAuthMode"
@@ -37,16 +37,20 @@
 	import { useAuth } from '../../composables/use-auth';
 	import DataLoader from '../Loader/DataLoader.vue';
 	import { AxiosError, type Axios } from 'axios';
-import type { AuthData } from '../../types/auth-types';
+	import type { AuthData } from '../../types/auth-types';
 
 	const authMode = ref<string>('login');
-	const isFormValid = ref<boolean>(true);
 	const username = ref<string>('');
 	const password = ref<string>('');
 	const isLoading = ref<boolean>(false);
 	const error = ref<AxiosError | null>(null);
 	const { auth } = useAuth();
-
+	
+	const isFormValid = computed<boolean>(() => {
+		const result: boolean =  username.value !== '' && password.value !== '';
+		console.log("isFormValid", result);
+		return result;
+	})
 	const submitButtonCaption = computed<string>(() => {
 		return authMode.value === 'login' ? 'Sign In ' : 'Sign up';
 	});
@@ -69,14 +73,9 @@ import type { AuthData } from '../../types/auth-types';
 	}
 
 	async function submitForm(): Promise<void> {
-		isFormValid.value = true;
-		if (username.value === null || password.value.length < 2) {
-			isFormValid.value = false;
-			console.log('Form not valid');
-			return;
-		}
-		isLoading.value = true;
+		if(!isFormValid.value) return;
 		try {
+			isLoading.value = true;
 			console.log('Form valid');
 			await auth({
 				username: username.value,
@@ -128,6 +127,12 @@ import type { AuthData } from '../../types/auth-types';
 		cursor: pointer;
 		background-color: var(--secondary-btn-color);
 		border: 2px solid var(--secondary-btn-color);
+	}
+
+	.auth-form button:disabled {
+		cursor: not-allowed;
+		background-color: lightgray;
+		border: 2px solid lightgrey;
 	}
 
 	.auth-form a {
