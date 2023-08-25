@@ -1,15 +1,6 @@
 import http from '../src/http-common';
+import type { Credentials, User } from '../src/types/auth-types';
 
-export interface Credentials {
-	username: string;
-	password: string;
-}
-
-export interface User {
-	id: number | string;
-	username: string;
-	token: string;
-}
 
 class AuthenticationService {
 	baseUrl = '/AppUser';

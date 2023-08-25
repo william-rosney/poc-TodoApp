@@ -1,10 +1,7 @@
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
-import TodoAppDataService, {
-	type DeleteTodo,
-	type Todo,
-	type UpdateTodo,
-} from '../../services/TodoAppDataService';
 import { useAuth } from './use-auth';
+import type { DeleteTodo, Todo, UpdateTodo } from '../types/todo-types';
+import TodoAppDataService from '../../services/TodoAppDataService';
 
 const todos: Ref<Todo[]> = ref([]);
 // const sortedTodos = computed(() => {

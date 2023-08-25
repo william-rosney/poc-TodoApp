@@ -1,8 +1,6 @@
 import { computed, ref, type Ref } from 'vue';
-import AuthenticationService, {
-	type Credentials,
-	type User,
-} from '../../services/AuthenticationService.js';
+import type { Credentials, User } from '../types/auth-types';
+import AuthenticationService from '../../services/AuthenticationService';
 
 const userId: Ref<number | string | null> = ref(null);
 const token: Ref<string | null> = ref(null);
