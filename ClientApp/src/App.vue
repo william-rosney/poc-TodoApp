@@ -10,10 +10,10 @@
 	</main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 	import UserAuth from './pages/auth/UserAuth.vue';
 	import UserTodoList from './pages/todos/UserTodoList.vue';
-	import BaseCardContainer from './layouts/BaseCardContainer.vue';
+	import BaseCardContainer from './components/Base/BaseCardContainer.vue';
 	import NavBar from './layouts/NavBar.vue';
 	import AuthenticationForm from './components/AuthenticationForm/AuthenticationForm.vue';
 	import { useAuth } from './composables/use-auth';
