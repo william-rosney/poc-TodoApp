@@ -19,24 +19,24 @@
 	</form>
 </template>
 
-<script setup>
-	import { onMounted, ref } from 'vue';
-	import { useTodos } from '../composables/use-todos';
+<script setup lang="ts">
+	import { onMounted, ref, type Ref } from 'vue';
+	import { useTodos } from '../../composables/use-todos';
 
 	const { addTodo } = useTodos();
-	const newTodoTitle = ref('');
-	const input = ref(null);
+	const newTodoTitle= ref<string>('');
+	const input = ref<HTMLInputElement | null>(null);
 
 	function submit(){
 		if(newTodoTitle.value){
 			addTodo(newTodoTitle.value);
 			newTodoTitle.value = '';
 		}
-		input.value.focus();
+		input.value?.focus();
 	}
 
 	onMounted(() => {
-		input.value.focus();
+		input.value?.focus();
 	});
 </script>
 

@@ -29,29 +29,31 @@
 		@close="onClose" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 	import { ref } from 'vue';
-	import { useTodos } from '../composables/use-todos';
+	import { useTodos } from '../../composables/use-todos';
 	import Updatetododialog from './UpdateTodoDialog.vue';
+	import type { Todo, UpdateTodo } from '../../types/todo-types';
 
 	const { deleteTodo, updateStatusTodo } = useTodos();
 
-	const props = defineProps({
-		todo: {
-			type: Object,
-			required: true,
-		},
-	});
-	const isDialogOpened = ref(false);
+	const props = defineProps<{
+		todo: Todo;
+	}>();
+	const isDialogOpened = ref<boolean>(false);
 
 	function onDelete() {
-		deleteTodo(props.todo.id);
+		deleteTodo({ id: props.todo.id, userId: props.todo.userId });
 	}
 
-	function toggleIsCompleted(event){
-		const newTodo = {...props.todo, isCompleted: event.target.checked};
+	function toggleIsCompleted(event: Event) {
+		const newTodo: UpdateTodo = {
+			id: props.todo.id,
+			title: props.todo.title,
+			userId: props.todo.userId,
+			isCompleted: (event.target as HTMLInputElement).checked,
+		};
 		updateStatusTodo(newTodo);
-
 	}
 
 	function onClose() {
@@ -169,5 +171,4 @@
 	.delete-svgIcon path:hover {
 		fill: var(--secondary-delete-icon-color);
 	}
-
 </style>

@@ -1,28 +1,30 @@
 <template>
+	<NavBar v-if="isAuthenticated" />
 	<main>
-		<div class="container">
-			<TodoForm />
-			<TodoList v-if="!isLoading"/>
-			<DataLoader class="data-loader" v-else/>
-		</div>
+		<BaseCardContainer class="card">
+			<UserTodoList v-if="isAuthenticated"></UserTodoList>
+			<UserAuth v-else>
+				<AuthenticationForm class="auth"/>
+			</UserAuth>
+		</BaseCardContainer>
 	</main>
 </template>
 
-<script setup>
-	import TodoForm from './components/TodoForm.vue';
-	import TodoList from './components/TodoList.vue';
-	import { onMounted } from 'vue';
-	import { useTodos } from './composables/use-todos';
-	import DataLoader from './components/Loader/DataLoader.vue';
+<script setup lang="ts">
+	import UserAuth from './pages/auth/UserAuth.vue';
+	import UserTodoList from './pages/todos/UserTodoList.vue';
+	import BaseCardContainer from './components/Base/BaseCardContainer.vue';
+	import NavBar from './layouts/NavBar.vue';
+	import AuthenticationForm from './components/AuthenticationForm/AuthenticationForm.vue';
+	import { useAuth } from './composables/use-auth';
+	import { onBeforeMount } from 'vue';
 
-	const { getTodos, isLoading } = useTodos();
+	const { isAuthenticated, tryLogin } = useAuth();
 
-	onMounted(() => {
-		console.log('onMounted');
-		getTodos();
+	onBeforeMount(() => {
+		tryLogin();
 	});
 </script>
-
 <style scoped>
 	main {
 		display: flex;
@@ -32,30 +34,15 @@
 		background-color: #f6f8fa;
 	}
 
-	.container {
-		background-color: white;
-		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		padding: 20px;
-		width: 600px;
-		height: 500px;
-		display: flex;
-		flex-direction: column;
-		position: relative;
-	}
-	.data-loader {
-		align-self: center;
-		margin-top: 15%;
-
-	}
-
-
-	@media screen and (min-width: 768px) and (max-width: 1023px) {
-		
-	}
 	@media screen and (max-width: 767px) {
-		.container {
+		.card {
 			width: 80%;
 		}
+		.auth {
+			margin-left: auto;
+			margin-right: auto;
+			width: 95%;
+		}
 	}
+
 </style>

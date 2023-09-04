@@ -453,7 +453,5 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 
-## # local sqlite db that is auto generated
-TodoApp.db
 TodoApp.db-shm
 TodoApp.db-wal

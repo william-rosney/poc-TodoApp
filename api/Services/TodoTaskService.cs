@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.DTOs;
 using api.Entities;
 using api.Helpers;
@@ -11,12 +7,11 @@ namespace api.Services
 {
     public interface ITodoTaskService
     {
-        IEnumerable<TodoTaskDTO> GetAll();
-        TodoTaskDTO GetById(int id);
-        void Create(TodoTaskCreateDTO model);
-        void Update(int id, TodoTaskUpdateDTO model);
-        void UpdateStatus(int id, TodoTaskUpdateDTO model);
-        void Delete(int id);
+        IEnumerable<TodoTaskDTO> GetAll(int userId);
+        TodoTaskDTO Create(TodoTaskCreateDTO model);
+        TodoTaskDTO Update(TodoTaskUpdateDTO model);
+        TodoTaskDTO UpdateStatus(TodoTaskUpdateDTO model);
+        void Delete(TodoTaskDeleteDTO model);
 
     }
     public class TodoTaskService : ITodoTaskService
@@ -30,54 +25,65 @@ namespace api.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<TodoTaskDTO> GetAll()
+        public IEnumerable<TodoTaskDTO> GetAll(int userId)
         {
-            var todos = _context.Todos;
+            var todos = _context.Todos.Where(todo => todo.UserId == userId);
             return _mapper.Map<IEnumerable<TodoTaskDTO>>(todos);
         }
 
-        public TodoTaskDTO GetById(int id)
-        {
-            var todo = GetTodoTaskById(id);
-            return _mapper.Map<TodoTaskDTO>(todo);
-        }
-
-        public void Create(TodoTaskCreateDTO model)
+        public TodoTaskDTO Create(TodoTaskCreateDTO model)
         {
             TodoTask newTodo = _mapper.Map<TodoTask>(model);
             newTodo.LastStatusUpdate = newTodo.LastUpdate;
             _context.Todos.Add(newTodo);
             _context.SaveChanges();
+            return _mapper.Map<TodoTaskDTO>(newTodo);
         }
 
-        public void Delete(int id)
+        public void Delete(TodoTaskDeleteDTO model)
         {
-            TodoTask todo = GetTodoTaskById(id);
+            var userTodos = GetTodoTasksByUserId(model.UserId);
+            TodoTask todo = GetTodoTaskById(userTodos, model.Id);
             _context.Todos.Remove(todo);
             _context.SaveChanges();
         }
-        public void Update(int id, TodoTaskUpdateDTO model)
+        public TodoTaskDTO Update(TodoTaskUpdateDTO model)
         {
-            TodoTask todo = GetTodoTaskById(id);
+            var userTodos = GetTodoTasksByUserId(model.UserId);
+            TodoTask todo = GetTodoTaskById(userTodos, model.Id);
             todo = _mapper.Map(model, todo);
             todo.LastUpdate = DateTime.Now;
+
             _context.Todos.Update(todo);
             _context.SaveChanges();
+
+            return _mapper.Map<TodoTaskDTO>(todo);
         }
-        public void UpdateStatus(int id, TodoTaskUpdateDTO model)
+        public TodoTaskDTO UpdateStatus(TodoTaskUpdateDTO model)
         {
-            TodoTask todo = GetTodoTaskById(id);
+            var userTodos = GetTodoTasksByUserId(model.UserId);
+            TodoTask todo = GetTodoTaskById(userTodos, model.Id);
             todo = _mapper.Map(model, todo);
             todo.LastUpdate = DateTime.Now;
             todo.LastStatusUpdate = DateTime.Now;
+
             _context.Todos.Update(todo);
             _context.SaveChanges();
+            
+            return _mapper.Map<TodoTaskDTO>(todo);
         }
 
         // helper methods
-        private TodoTask GetTodoTaskById(int id)
+
+        private IEnumerable<TodoTask> GetTodoTasksByUserId(int userId)
         {
-            var todo = _context.Todos.Find(id) ?? throw new KeyNotFoundException("TodoTask not found");
+            var todos = _context.Todos.Where(todo => todo.UserId == userId);
+            return todos;
+        }
+
+        private TodoTask GetTodoTaskById(IEnumerable<TodoTask> userTodos, int todoId)
+        {
+            var todo = userTodos.SingleOrDefault(todo => todo.Id == todoId) ?? throw new ArgumentNullException("TodoTask not found");
             return todo;
         }
     }

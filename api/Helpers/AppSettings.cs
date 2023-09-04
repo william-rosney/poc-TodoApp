@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.DTOs
+namespace api.Helpers
 {
-    public class TodoTaskUpdateDTO : TodoTaskCreateDTO
+    public class AppSettings
     {
-        public int Id { get; set; }
+        public string? Secret { get; set; }
     }
 }
